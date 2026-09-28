@@ -19,7 +19,6 @@ interface LinkedQuestion {
     myAnswer?: string | null;
     modelAnswer?: string | null;
     category: string;
-    difficulty: string;
     timesAsked: number;
   };
 }
