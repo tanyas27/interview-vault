@@ -131,7 +131,7 @@ What's your greatest weakness?`}
           <ul className="space-y-1 text-sm text-blue-800 dark:text-blue-200">
             <li>• Questions are automatically parsed from your text</li>
             <li>• Duplicate questions are detected and linked (frequency counter increases)</li>
-            <li>• New questions are added with default category (GENERAL) and difficulty (MEDIUM)</li>
+            <li>• New questions are added with default category (GENERAL); context comes from the round type</li>
             <li>• Visit the Question Bank to categorize, add answers, and track confidence levels</li>
           </ul>
         </div>

@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
 import { getCurrentUser } from './auth';
-import { QuestionCategory, Difficulty, Prisma } from '@prisma/client';
+import { QuestionCategory, Prisma } from '@prisma/client';
 import { questionFormSchema } from '@/lib/schemas';
 
 const PAGE_SIZE = 20;
@@ -12,7 +12,6 @@ const PAGE_SIZE = 20;
 export async function getQuestions(
   filters?: {
     category?: QuestionCategory;
-    difficulty?: Difficulty;
     needsReview?: boolean;
     search?: string;
   },
@@ -24,7 +23,6 @@ export async function getQuestions(
   const where: Prisma.QuestionWhereInput = { userId: user.userId };
 
   if (filters?.category) where.category = filters.category;
-  if (filters?.difficulty) where.difficulty = filters.difficulty;
   if (filters?.needsReview !== undefined) where.needsReview = filters.needsReview;
   if (filters?.search) where.questionText = { contains: filters.search };
 
@@ -128,7 +126,6 @@ export async function extractQuestionsFromText(roundId: string, text: string) {
       data: newQuestionTexts.map((questionText) => ({
         questionText,
         category: QuestionCategory.GENERAL,
-        difficulty: Difficulty.MEDIUM,
         userId: user.userId,
       })),
     });
@@ -183,7 +180,6 @@ export async function updateQuestion(
   data: {
     questionText?: string;
     category?: QuestionCategory;
-    difficulty?: Difficulty;
     myAnswer?: string;
     modelAnswer?: string;
     keyPoints?: string;
@@ -216,7 +212,7 @@ export async function deleteQuestion(id: string) {
 
 export async function bulkUpdateQuestions(
   ids: string[],
-  data: { category?: QuestionCategory; difficulty?: Difficulty; needsReview?: boolean },
+  data: { category?: QuestionCategory; needsReview?: boolean },
 ) {
   const user = await getCurrentUser();
   if (!user) throw new Error('Unauthorized');
@@ -249,7 +245,6 @@ export async function updateQuestionFromForm(id: string, formData: FormData) {
     data: {
       questionText: d.questionText,
       category: d.category as QuestionCategory,
-      difficulty: d.difficulty as Difficulty,
       myAnswer: d.myAnswer || '',
       modelAnswer: d.modelAnswer || '',
       keyPoints: d.keyPoints || '',

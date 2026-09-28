@@ -209,7 +209,7 @@ export default async function DashboardPage() {
                       {app.companyName}
                     </p>
                     <p className="text-[11px] text-[#717682]">{app.jobTitle}</p>
-                    {app.offeredSalary && (
+                    {app.offeredSalary && (app.status === 'ACCEPTED' || app.status === 'OFFER') && (
                       <p className="text-[10px] font-semibold text-emerald-700">
                         ₹{app.offeredSalary.toLocaleString('en-IN')} (INR)
                       </p>

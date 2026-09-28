@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { QuestionCategory, Difficulty } from '@prisma/client';
+import { QuestionCategory } from '@prisma/client';
 
 export default async function EditQuestionPage({
   params,
@@ -59,8 +59,7 @@ export default async function EditQuestionPage({
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
+            <div className="space-y-2">
                 <Label htmlFor="category">Category *</Label>
                 <select
                   id="category"
@@ -75,23 +74,6 @@ export default async function EditQuestionPage({
                   ))}
                 </select>
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="difficulty">Difficulty *</Label>
-                <select
-                  id="difficulty"
-                  name="difficulty"
-                  defaultValue={question.difficulty}
-                  className="w-full rounded-2xl border border-zinc-200 bg-white px-3.5 py-2.5 text-sm text-[#1c2024] focus:outline-none focus:ring-2 focus:ring-[#ffcf36]/50"
-                >
-                  {Object.values(Difficulty).map((diff) => (
-                    <option key={diff} value={diff}>
-                      {diff}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
           </CardContent>
         </Card>
 

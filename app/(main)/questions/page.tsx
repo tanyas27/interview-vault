@@ -3,28 +3,24 @@ import { getQuestions } from '@/actions/questions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, ChevronRight, ChevronLeft } from 'lucide-react';
-import { QuestionCategory, Difficulty } from '@prisma/client';
+import { QuestionCategory } from '@prisma/client';
 
 export default async function QuestionsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; difficulty?: string; needsReview?: string; search?: string; page?: string }>;
+  searchParams: Promise<{ category?: string; needsReview?: string; search?: string; page?: string }>;
 }) {
   const params = await searchParams;
   const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1);
 
   const filters: {
     category?: QuestionCategory;
-    difficulty?: Difficulty;
     needsReview?: boolean;
     search?: string;
   } = {};
 
   if (params.category && Object.values(QuestionCategory).includes(params.category as QuestionCategory)) {
     filters.category = params.category as QuestionCategory;
-  }
-  if (params.difficulty && Object.values(Difficulty).includes(params.difficulty as Difficulty)) {
-    filters.difficulty = params.difficulty as Difficulty;
   }
   if (params.needsReview) filters.needsReview = params.needsReview === 'true';
   if (params.search) filters.search = params.search.slice(0, 200);
@@ -81,17 +77,6 @@ export default async function QuestionsPage({
                       <div className="flex items-center gap-2 shrink-0">
                         <Badge variant="outline" className="text-xs">
                           {question.category.replace(/_/g, ' ')}
-                        </Badge>
-                        <Badge
-                          variant={
-                            question.difficulty === 'EASY'
-                              ? 'success'
-                              : question.difficulty === 'MEDIUM'
-                              ? 'yellow'
-                              : 'destructive'
-                          }
-                        >
-                          {question.difficulty}
                         </Badge>
                       </div>
                     </div>

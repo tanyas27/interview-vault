@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getReferral, deleteReferral } from '@/actions/referrals';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, Pencil, ArrowRight, Trash2 } from 'lucide-react';
+import { ChevronLeft, Pencil, ArrowRight } from 'lucide-react';
+import { DeleteReferralButton } from '@/components/referrals/DeleteReferralButton';
 
 const STATUS_STYLES: Record<string, string> = {
   PENDING: 'bg-zinc-100 text-zinc-700',
@@ -129,16 +130,7 @@ export default async function ReferralDetailPage({ params }: { params: Promise<{
         </div>
       )}
 
-      {/* Delete */}
-      <form action={deleteWithId} className="flex justify-end pt-2">
-        <button
-          type="submit"
-          className="inline-flex items-center gap-1.5 text-xs text-red-500 hover:text-red-700 transition-colors font-medium"
-          onClick={(e) => { if (!confirm('Delete this referral?')) e.preventDefault(); }}
-        >
-          <Trash2 className="w-3.5 h-3.5" /> Delete referral
-        </button>
-      </form>
+      <DeleteReferralButton deleteAction={deleteWithId} />
     </div>
   );
 }

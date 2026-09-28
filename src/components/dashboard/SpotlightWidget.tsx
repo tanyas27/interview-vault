@@ -41,7 +41,10 @@ export function SpotlightWidget({
 
   const currentSalary = userProfile?.currentSalary ?? null;
   const expectedSalary = application?.expectedSalary ?? userProfile?.expectedSalary ?? null;
-  const offeredSalary = application?.offeredSalary ?? null;
+  const offeredSalary =
+    (application?.status === 'ACCEPTED' || application?.status === 'OFFER')
+      ? (application?.offeredSalary ?? null)
+      : null;
 
   const userInitials = candidateName
     .split(' ')

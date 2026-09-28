@@ -180,7 +180,9 @@ export function ApplicationForm({ action, initialData, submitLabel = 'Create App
               <Input
                 id="expectedSalary"
                 name="expectedSalary"
-                type="number"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 placeholder="e.g. 2800000"
                 defaultValue={initialData?.expectedSalary ?? ''}
               />
@@ -191,7 +193,9 @@ export function ApplicationForm({ action, initialData, submitLabel = 'Create App
               <Input
                 id="offeredSalary"
                 name="offeredSalary"
-                type="number"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 placeholder="e.g. 3200000"
                 defaultValue={initialData?.offeredSalary ?? ''}
               />

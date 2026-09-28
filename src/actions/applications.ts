@@ -11,7 +11,9 @@ const PAGE_SIZE = 20;
 
 function parseSalary(val: string | null | undefined): number | null {
   if (!val) return null;
-  const n = parseInt(val, 10);
+  const cleaned = String(val).replace(/[₹,\s]/g, '');
+  if (!cleaned) return null;
+  const n = parseInt(cleaned, 10);
   return isNaN(n) ? null : Math.max(0, n);
 }
 

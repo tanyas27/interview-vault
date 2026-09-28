@@ -30,7 +30,6 @@ export default async function QuestionDetailPage({ params }: { params: Promise<{
             </h1>
             <div className="flex gap-2 mt-3">
               <Badge>{question.category}</Badge>
-              <Badge variant="outline">{question.difficulty}</Badge>
               <Badge variant="secondary">Asked {question.timesAsked}x</Badge>
               {question.needsReview && <Badge variant="warning">Needs Review</Badge>}
             </div>

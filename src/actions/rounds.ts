@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
 import { getCurrentUser } from './auth';
-import { RoundType, RoundStatus, QuestionCategory, Difficulty } from '@prisma/client';
+import { QuestionCategory } from '@prisma/client';
 import { roundSchema, addQuestionToRoundSchema } from '@/lib/schemas';
 
 const PAGE_SIZE = 20;
@@ -96,20 +96,12 @@ export async function createRound(formData: FormData) {
         userId: user.userId,
         questionText: initialQuestionText,
         myAnswer: initialAnswer || '',
-        category: QuestionCategory.ROLE_SPECIFIC,
-        difficulty: Difficulty.MEDIUM,
+        category: QuestionCategory.GENERAL,
       },
     });
 
     await db.roundQuestion.create({
       data: { roundId: round.id, questionId: newQuestion.id },
-    });
-  }
-
-  if (d.status === RoundStatus.PASSED) {
-    await db.application.update({
-      where: { id: applicationId, userId: user.userId },
-      data: { status: 'INTERVIEWING' },
     });
   }
 
@@ -190,7 +182,7 @@ export async function addQuestionToRound(roundId: string, formData: FormData) {
     throw new Error(parsed.error.issues[0]?.message ?? 'Invalid question data.');
   }
 
-  const { questionText, myAnswer, category, difficulty } = parsed.data;
+  const { questionText, myAnswer, category } = parsed.data;
 
   let question = await db.question.findFirst({
     where: { userId: user.userId, questionText },
@@ -212,7 +204,6 @@ export async function addQuestionToRound(roundId: string, formData: FormData) {
         questionText,
         myAnswer: myAnswer || '',
         category: category as QuestionCategory,
-        difficulty: difficulty as Difficulty,
         timesAsked: 1,
         lastAskedDate: new Date(),
       },

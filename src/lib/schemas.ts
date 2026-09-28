@@ -6,7 +6,6 @@ import {
   RoundType,
   RoundStatus,
   QuestionCategory,
-  Difficulty,
   ReferralStatus,
 } from '@prisma/client';
 
@@ -66,7 +65,6 @@ export const roundSchema = z.object({
 export const questionFormSchema = z.object({
   questionText: z.string().min(5, 'Question must be at least 5 characters.').max(2000).trim(),
   category: z.nativeEnum(QuestionCategory).default(QuestionCategory.GENERAL),
-  difficulty: z.nativeEnum(Difficulty).default(Difficulty.MEDIUM),
   myAnswer: z.string().max(5000).optional(),
   modelAnswer: z.string().max(5000).optional(),
   keyPoints: z.string().max(2000).optional(),
@@ -78,8 +76,7 @@ export const questionFormSchema = z.object({
 export const addQuestionToRoundSchema = z.object({
   questionText: z.string().min(5, 'Question must be at least 5 characters.').max(2000).trim(),
   myAnswer: z.string().max(5000).optional(),
-  category: z.nativeEnum(QuestionCategory).default(QuestionCategory.ROLE_SPECIFIC),
-  difficulty: z.nativeEnum(Difficulty).default(Difficulty.MEDIUM),
+  category: z.nativeEnum(QuestionCategory).default(QuestionCategory.GENERAL),
 });
 
 export const referralSchema = z.object({

@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { addQuestionToRound, removeQuestionFromRound } from '@/actions/rounds';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Plus, Trash2, Edit3, MessageCircleQuestion, Sparkles, ChevronDown, Check } from 'lucide-react';
-import { QuestionCategory, Difficulty } from '@prisma/client';
+import { Card, CardContent } from '@/components/ui/card';
+import { Plus, Trash2, Edit3, MessageCircleQuestion, Sparkles } from 'lucide-react';
+import { QuestionCategory } from '@prisma/client';
 import { QuestionScratchpad } from './QuestionScratchpad';
 
 interface LinkedQuestion {
@@ -27,11 +27,15 @@ interface LinkedQuestion {
 interface RoundQuestionsManagerProps {
   roundId: string;
   roundQuestions: LinkedQuestion[];
+  roundType: string;
+  companyName: string;
 }
 
 export function RoundQuestionsManager({
   roundId,
   roundQuestions,
+  roundType,
+  companyName,
 }: RoundQuestionsManagerProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [showScratchpad, setShowScratchpad] = useState(false);
@@ -39,8 +43,7 @@ export function RoundQuestionsManager({
 
   const [questionText, setQuestionText] = useState('');
   const [myAnswer, setMyAnswer] = useState('');
-  const [category, setCategory] = useState<QuestionCategory>(QuestionCategory.ROLE_SPECIFIC);
-  const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.MEDIUM);
+  const [category, setCategory] = useState<QuestionCategory>(QuestionCategory.GENERAL);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +54,6 @@ export function RoundQuestionsManager({
     formData.append('questionText', questionText.trim());
     formData.append('myAnswer', myAnswer.trim());
     formData.append('category', category);
-    formData.append('difficulty', difficulty);
 
     try {
       await addQuestionToRound(roundId, formData);
@@ -165,18 +167,12 @@ export function RoundQuestionsManager({
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-semibold text-[#717682]">Difficulty</label>
-                <select
-                  value={difficulty}
-                  onChange={(e) => setDifficulty(e.target.value as Difficulty)}
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-[#1c2024]"
-                >
-                  {Object.values(Difficulty).map((diff) => (
-                    <option key={diff} value={diff}>
-                      {diff}
-                    </option>
-                  ))}
-                </select>
+                <label className="text-[11px] font-semibold text-[#717682]">Round context</label>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-zinc-100 bg-zinc-50 text-xs text-[#4b515d]">
+                  <span className="font-semibold text-[#1c2024]">{companyName}</span>
+                  <span className="text-zinc-400">·</span>
+                  <span>{roundType.replace(/_/g, ' ')}</span>
+                </div>
               </div>
             </div>
 
@@ -243,8 +239,8 @@ export function RoundQuestionsManager({
                     <Badge variant="outline" className="text-[10px]">
                       {rq.question.category.replace(/_/g, ' ')}
                     </Badge>
-                    <Badge variant="outline" className="text-[10px]">
-                      {rq.question.difficulty}
+                    <Badge variant="secondary" className="text-[10px]">
+                      {companyName} · {roundType.replace(/_/g, ' ')}
                     </Badge>
                   </div>
 

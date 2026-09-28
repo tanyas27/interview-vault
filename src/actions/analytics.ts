@@ -137,7 +137,6 @@ export async function getWeakAreas(userId: string) {
       id: true,
       questionText: true,
       category: true,
-      difficulty: true,
       confidenceLevel: true,
       timesAsked: true,
       needsReview: true,

@@ -60,6 +60,8 @@ export default async function RoundDetailPage({
       <RoundQuestionsManager
         roundId={id}
         roundQuestions={round.roundQuestions}
+        roundType={round.roundType}
+        companyName={round.application.companyName}
       />
 
 
