@@ -9,7 +9,7 @@ datasource db {
   // Local dev: DATABASE_URL="file:./dev.db" (SQLite)
   // Production (Vercel + Neon): change provider to "postgresql" and set
   //   DATABASE_URL="postgresql://user:pass@pooler.neon.tech/db?sslmode=require"
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
