@@ -1,0 +1,310 @@
+// This is your Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // Local dev: DATABASE_URL="file:./dev.db" (SQLite)
+  // Production (Vercel + Neon): change provider to "postgresql" and set
+  //   DATABASE_URL="postgresql://user:pass@pooler.neon.tech/db?sslmode=require"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// AUTHENTICATION
+// ============================================================================
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash   String   // bcrypt hash of master password
+  currentRole    String?  // Current title / role (e.g. Software Engineer)
+  currentCompany String?  // Current employer / company
+  targetRole     String?  // Target role for interviews (e.g. Senior SDE)
+  currentSalary  Int?     // Current compensation (e.g. INR)
+  expectedSalary Int?     // Expected compensation (e.g. INR)
+  phone          String?
+  location       String?
+  tokenVersion   Int      @default(0) // incremented on logout/password-change to revoke all tokens
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  applications Application[]
+  questions    Question[]
+  referrals    Referral[]
+
+  @@map("users")
+}
+
+// ============================================================================
+// JOB APPLICATIONS
+// ============================================================================
+
+model Application {
+  id              String            @id @default(cuid())
+
+  // Company & Role
+  companyName     String
+  jobTitle        String
+  jobDescription  String?           @default("")
+  jobUrl          String?
+  location        String?
+  workMode        WorkMode          @default(HYBRID)
+
+  // Application tracking
+  status          ApplicationStatus @default(APPLIED)
+  appliedDate     DateTime          @default(now())
+  lastUpdated     DateTime          @updatedAt
+
+  // Referral info
+  hasReferral     Boolean           @default(false)
+  referrerName    String?
+  referrerEmail   String?
+  referrerLinkedIn String?
+  referralNotes   String?
+
+  // Documents
+  resumeVersion   String?           // e.g., "Software Engineer v3"
+  resumeUrl       String?           // Link to resume file/GDrive
+  coverLetterUrl  String?
+
+  // Compensation (optional)
+  expectedSalary  Int?              // in USD or user's currency
+  offeredSalary   Int?
+
+  // Metadata
+  priority        Priority          @default(MEDIUM)
+  notes           String?           @default("")
+  tags            String?           @default("")  // Comma-separated tags
+
+  // Relations
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rounds          InterviewRound[]
+  referral        Referral?
+
+  @@index([userId])
+  @@index([status])
+  @@index([appliedDate])
+  @@index([companyName])
+  @@map("applications")
+}
+
+// ============================================================================
+// INTERVIEW ROUNDS
+// ============================================================================
+
+model InterviewRound {
+  id               String         @id @default(cuid())
+
+  // Round details
+  roundType        RoundType
+  roundNumber      Int            @default(1)  // 1st phone screen, 2nd technical, etc.
+  scheduledDate    DateTime?
+  completedDate    DateTime?
+  durationMinutes  Int?
+
+  // Interviewer(s)
+  interviewerName  String?
+  interviewerTitle String?
+  interviewerEmail String?
+  interviewerNotes String?        @default("")
+
+  // Outcome
+  status           RoundStatus    @default(SCHEDULED)
+  feedback         String?        @default("")
+  rating           Int?           // 1-5 self-rating
+
+  // Notes & prep
+  prepNotes        String?        @default("")
+  generalNotes     String?        @default("")
+
+  // Relations
+  applicationId    String
+  application      Application    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  roundQuestions   RoundQuestion[]
+
+  @@index([applicationId])
+  @@index([roundType])
+  @@index([status])
+  @@index([scheduledDate])
+  @@map("interview_rounds")
+}
+
+// ============================================================================
+// CENTRALIZED QUESTION BANK
+// ============================================================================
+
+model Question {
+  id              String          @id @default(cuid())
+
+  // Question content
+  questionText    String
+  category        QuestionCategory
+  difficulty      Difficulty      @default(MEDIUM)
+
+  // Answer & notes
+  myAnswer        String?         @default("")
+  modelAnswer     String?         @default("")
+  keyPoints       String?         @default("")  // Bullet points for quick review
+
+  // Metadata
+  tags            String?         @default("")  // Comma-separated: "system-design,scalability"
+  timesAsked      Int             @default(1)   // Incremented when linked to new rounds
+  lastAskedDate   DateTime        @default(now())
+
+  // Performance tracking
+  confidenceLevel Int?            // 1-5 rating
+  needsReview     Boolean         @default(false)
+
+  // Relations
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roundQuestions  RoundQuestion[]
+
+  @@index([userId])
+  @@index([category])
+  @@index([difficulty])
+  @@index([needsReview])
+  @@index([lastAskedDate])
+  @@map("questions")
+}
+
+// ============================================================================
+// JUNCTION TABLE: Round <-> Question
+// ============================================================================
+
+model RoundQuestion {
+  id              String         @id @default(cuid())
+
+  // How the question was asked in this specific round
+  contextNotes    String?        @default("")
+  wasAnswered     Boolean        @default(true)
+  performance     Int?           // 1-5 self-rating for this specific instance
+
+  // Relations
+  roundId         String
+  round           InterviewRound @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  questionId      String
+  question        Question       @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([roundId, questionId])
+  @@index([roundId])
+  @@index([questionId])
+  @@map("round_questions")
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum ApplicationStatus {
+  APPLIED
+  SCREENING
+  INTERVIEWING
+  OFFER
+  REJECTED
+  WITHDRAWN
+  ACCEPTED
+  ARCHIVED
+}
+
+enum RoundType {
+  PHONE_SCREEN
+  RECRUITER_SCREEN
+  TECHNICAL_CODING
+  TECHNICAL_SYSTEM_DESIGN
+  BEHAVIORAL
+  HIRING_MANAGER
+  PANEL
+  ONSITE
+  FINAL
+  OTHER
+}
+
+enum RoundStatus {
+  PASSED
+  FAILED
+  PENDING
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+  RESCHEDULED
+}
+
+enum QuestionCategory {
+  TECHNICAL_CODING
+  TECHNICAL_SYSTEM_DESIGN
+  TECHNICAL_ALGORITHMS
+  TECHNICAL_DATABASE
+  TECHNICAL_ARCHITECTURE
+  BEHAVIORAL_LEADERSHIP
+  BEHAVIORAL_CONFLICT
+  BEHAVIORAL_TEAMWORK
+  BEHAVIORAL_FAILURE
+  BEHAVIORAL_SUCCESS
+  COMPANY_CULTURE
+  ROLE_SPECIFIC
+  COMPENSATION
+  GENERAL
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum WorkMode {
+  REMOTE
+  HYBRID
+  ONSITE
+}
+
+// ============================================================================
+// REFERRALS
+// ============================================================================
+
+model Referral {
+  id           String         @id @default(cuid())
+  company      String
+  role         String?
+  referrerName String
+  status       ReferralStatus @default(PENDING)
+  notes        String?        @default("")
+  contactDate  DateTime       @default(now())
+  followUpDate DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  applicationId String?       @unique
+  application   Application?  @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([status])
+  @@map("referrals")
+}
+
+enum ReferralStatus {
+  PENDING
+  HR_CONTACTED
+  APPLIED
+  REJECTED
+  GHOSTED
+}

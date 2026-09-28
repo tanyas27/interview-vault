@@ -33,9 +33,22 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# SQLite local database — NEVER commit this (contains your real data)
+prisma/*.db
+prisma/*.db-journal
+prisma/*.db-shm
+prisma/*.db-wal
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# runtime logs — contain server URLs and request traces
+dev.log
+*.log
+
+# internal architecture docs — don't expose implementation details publicly
+IMPLEMENTATION_SUMMARY.md

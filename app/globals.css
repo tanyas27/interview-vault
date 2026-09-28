@@ -1,26 +1,110 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-sans: var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: var(--font-plus-jakarta), -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Reference Palette */
+  --canvas-bg: #9da5b0;
+  --dashboard-bg: #fcfbf7;
+  --dashboard-glow: rgba(255, 207, 54, 0.22);
+  --card-bg: #ffffff;
+  --card-dark: #1c2024;
+  --card-dark-foreground: #ffffff;
+  --accent-yellow: #ffcf36;
+  --accent-yellow-hover: #f5be24;
+  --accent-yellow-light: #fff8df;
+  --accent-charcoal: #1c2024;
+  --text-primary: #1c2024;
+  --text-secondary: #717682;
+  --text-muted: #8e939f;
+  --border-warm: #ede9df;
+  --border-light: rgba(0, 0, 0, 0.05);
+
+  --background: var(--canvas-bg);
+  --foreground: var(--text-primary);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border-warm);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--canvas-bg);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+/* Page & element entry animations */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+.animate-page-in {
+  animation: page-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Shimmer skeleton — use instead of animate-pulse for richer loading states */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.06) 0%,
+    rgba(0, 0, 0, 0.10) 40%,
+    rgba(0, 0, 0, 0.06) 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* Utility animations & effects */
+.striped-pill {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(0, 0, 0, 0.06),
+    rgba(0, 0, 0, 0.06) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.glow-warm {
+  box-shadow: 0 0 60px 10px rgba(255, 207, 54, 0.25);
+}
+
