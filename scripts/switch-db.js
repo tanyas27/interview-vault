@@ -20,16 +20,20 @@ if (schema !== updatedSchema) {
   console.log(`schema.prisma provider is already "${provider}" — no change.`);
 }
 
-// Patch migration_lock.toml
+// Patch migration_lock.toml (only if it exists)
 const lockPath = './prisma/migrations/migration_lock.toml';
-const lock = fs.readFileSync(lockPath, 'utf8');
-const updatedLock = lock.replace(
-  /provider\s*=\s*"(sqlite|postgresql)"/,
-  `provider = "${provider}"`
-);
-if (lock !== updatedLock) {
-  fs.writeFileSync(lockPath, updatedLock);
-  console.log(`Switched migration_lock.toml provider to: ${provider}`);
+if (fs.existsSync(lockPath)) {
+  const lock = fs.readFileSync(lockPath, 'utf8');
+  const updatedLock = lock.replace(
+    /provider\s*=\s*"(sqlite|postgresql)"/,
+    `provider = "${provider}"`
+  );
+  if (lock !== updatedLock) {
+    fs.writeFileSync(lockPath, updatedLock);
+    console.log(`Switched migration_lock.toml provider to: ${provider}`);
+  } else {
+    console.log(`migration_lock.toml provider is already "${provider}" — no change.`);
+  }
 } else {
-  console.log(`migration_lock.toml provider is already "${provider}" — no change.`);
+  console.log('migration_lock.toml not found — skipping.');
 }
