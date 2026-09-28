@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "vercel-build": "node scripts/switch-db.js postgresql && prisma generate && prisma migrate deploy && next build",
+    "vercel-build": "node scripts/switch-db.js postgresql && prisma generate && prisma db push && next build",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "prisma generate",
