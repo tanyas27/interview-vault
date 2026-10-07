@@ -161,6 +161,7 @@ export async function getDashboardStats() {
   const [
     totalApplications,
     activeApplications,
+    totalRounds,
     upcomingRounds,
     totalQuestions,
     offersReceived,
@@ -174,6 +175,9 @@ export async function getDashboardStats() {
           in: [ApplicationStatus.APPLIED, ApplicationStatus.SCREENING, ApplicationStatus.INTERVIEWING],
         },
       },
+    }),
+    db.interviewRound.count({
+      where: { application: { userId: user.userId } },
     }),
     db.interviewRound.count({
       where: {
@@ -199,6 +203,7 @@ export async function getDashboardStats() {
   return {
     totalApplications,
     activeApplications,
+    totalRounds,
     upcomingRounds,
     totalQuestions,
     offersReceived,

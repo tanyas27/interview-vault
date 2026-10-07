@@ -23,19 +23,19 @@ export function Header({ userName, userEmail }: HeaderProps) {
   const initial = userName ? userName.charAt(0).toUpperCase() : 'U';
 
   return (
-    <header className="relative z-30 w-full">
-      <div className="flex items-center justify-between gap-4">
+    <header className="relative z-30 w-full max-w-full">
+      <div className="flex items-center justify-between gap-3 sm:gap-4">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-black/15 bg-white/70 backdrop-blur-md shadow-xs hover:bg-white transition-all text-[#1c2024]"
+          className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full border border-black/15 bg-white/70 backdrop-blur-md shadow-xs hover:bg-white transition-all text-[#1c2024] shrink-0"
         >
           <div className="w-2.5 h-2.5 rounded-full bg-[#ffcf36] ring-2 ring-[#ffcf36]/40" />
-          <span className="font-bold tracking-tight text-base">InterviewVault</span>
+          <span className="font-bold tracking-tight text-sm sm:text-base">InterviewVault</span>
         </Link>
 
         <nav
           aria-label="Main navigation"
-          className="hidden lg:flex items-center gap-1.5 p-1 rounded-full bg-white/60 backdrop-blur-md border border-black/[0.06] shadow-xs"
+          className="hidden lg:flex items-center gap-1 xl:gap-1.5 p-1 rounded-full bg-white/60 backdrop-blur-md border border-black/[0.06] shadow-xs"
         >
           {NAV_WITHOUT_SETTINGS.map((item) => {
             const isActive =
@@ -50,7 +50,7 @@ export function Header({ userName, userEmail }: HeaderProps) {
                 prefetch={true}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'px-5 py-2 text-sm font-medium rounded-full transition-all duration-200',
+                  'px-3.5 xl:px-5 py-1.5 xl:py-2 text-xs xl:text-sm font-medium rounded-full transition-all duration-200 shrink-0',
                   isActive
                     ? 'bg-[#1c2024] text-white shadow-sm'
                     : 'text-[#5d636f] hover:text-[#1c2024] hover:bg-black/5',
@@ -62,10 +62,10 @@ export function Header({ userName, userEmail }: HeaderProps) {
           })}
         </nav>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           <Link
             href="/settings"
-            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/10 bg-white/70 hover:bg-white text-xs font-semibold text-[#1c2024] shadow-xs transition-colors"
+            className="hidden xl:inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/10 bg-white/70 hover:bg-white text-xs font-semibold text-[#1c2024] shadow-xs transition-colors"
           >
             <Settings className="w-3.5 h-3.5 text-[#5d636f]" />
             <span>Settings</span>

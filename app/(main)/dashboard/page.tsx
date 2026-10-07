@@ -70,7 +70,9 @@ async function DashboardHeaderData() {
       {/* Left: stat pills */}
       <div className="flex flex-wrap items-center gap-2">
         <div className="px-4 py-1.5 rounded-full bg-[#1c2024] text-white text-xs font-semibold shadow-xs">
-          {stats.upcomingRounds} Upcoming Rounds
+          {stats.upcomingRounds > 0
+            ? `${stats.upcomingRounds} Upcoming Round${stats.upcomingRounds !== 1 ? 's' : ''}`
+            : `${stats.totalRounds} Round${stats.totalRounds !== 1 ? 's' : ''}`}
         </div>
         <div className="px-4 py-1.5 rounded-full bg-[#ffcf36] text-[#1c2024] text-xs font-bold shadow-xs">
           {stats.offersReceived > 0
@@ -91,10 +93,10 @@ async function DashboardHeaderData() {
       </div>
 
       {/* Right: big metric counters */}
-      <div className="flex items-center gap-6 sm:gap-10 shrink-0">
+      <div className="flex flex-wrap items-center gap-6 sm:gap-10">
         {[
           { icon: <Users className="w-4 h-4 text-[#1c2024]" />, value: stats.totalApplications, label: 'Pipeline' },
-          { icon: <Calendar className="w-4 h-4 text-[#1c2024]" />, value: stats.upcomingRounds, label: 'Rounds' },
+          { icon: <Calendar className="w-4 h-4 text-[#1c2024]" />, value: stats.totalRounds, label: 'Rounds' },
           { icon: <FolderKanban className="w-4 h-4 text-[#1c2024]" />, value: stats.totalQuestions, label: 'Questions' },
         ].map(({ icon, value, label }) => (
           <div key={label} className="flex items-center gap-2.5">
@@ -123,7 +125,7 @@ async function DashboardWidgets() {
 
   const spotlightApp = applications[0] || null;
   const totalAppsScore = Math.min(35, stats.totalApplications * 7);
-  const totalRoundsScore = Math.min(35, rounds.length * 10);
+  const totalRoundsScore = Math.min(35, stats.totalRounds * 10);
   const questionsScore = Math.min(30, stats.totalQuestions * 3);
   const readinessPercent = Math.min(100, totalAppsScore + totalRoundsScore + questionsScore);
 

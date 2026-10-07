@@ -1,7 +1,7 @@
 'use server';
 
 import { cookies, headers } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { redirect, unstable_rethrow } from 'next/navigation';
 import { db } from '@/lib/db';
 import { hashPassword, verifyPassword, signToken, verifyToken } from '@/lib/auth';
 import { loginSchema, registerSchema, profileSchema } from '@/lib/schemas';
@@ -215,6 +215,7 @@ export async function getCurrentUser() {
       location: user.location || '',
     };
   } catch (error) {
+    unstable_rethrow(error);
     console.error('Failed to get current user:', error);
     return null;
   }
