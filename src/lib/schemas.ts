@@ -63,9 +63,9 @@ export const roundSchema = z.object({
 });
 
 export const questionFormSchema = z.object({
-  questionText: z.string().min(5, 'Question must be at least 5 characters.').max(2000).trim(),
-  category: z.nativeEnum(QuestionCategory).default(QuestionCategory.GENERAL),
-  myAnswer: z.string().max(5000).optional(),
+  questionText: z.string().min(1, 'Question content is required.').max(50000).trim(),
+  category: z.nativeEnum(QuestionCategory).default(QuestionCategory.MACHINE_CODING),
+  myAnswer: z.string().max(50000).optional(),
   modelAnswer: z.string().max(5000).optional(),
   keyPoints: z.string().max(2000).optional(),
   tags: z.string().max(500).optional(),
@@ -76,7 +76,7 @@ export const questionFormSchema = z.object({
 export const addQuestionToRoundSchema = z.object({
   questionText: z.string().min(5, 'Question must be at least 5 characters.').max(2000).trim(),
   myAnswer: z.string().max(5000).optional(),
-  category: z.nativeEnum(QuestionCategory).default(QuestionCategory.GENERAL),
+  category: z.nativeEnum(QuestionCategory).default(QuestionCategory.MACHINE_CODING),
 });
 
 export const referralSchema = z.object({

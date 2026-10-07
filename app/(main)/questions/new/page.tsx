@@ -1,53 +1,34 @@
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import { getQuestion, updateQuestionFromForm } from '@/actions/questions';
+import { createQuestionFromForm } from '@/actions/questions';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { QUESTION_CATEGORIES } from '@/lib/categories';
+import { QuestionCategory } from '@prisma/client';
 
-export default async function EditQuestionPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-  const question = await getQuestion(id);
-
-  if (!question) {
-    notFound();
-  }
-
-  const updateActionWithId = updateQuestionFromForm.bind(null, id);
-
-  // Combine questionText + myAnswer if both exist and differ, or default to questionText
-  const initialContent =
-    question.myAnswer && question.myAnswer !== question.questionText
-      ? `${question.questionText}\n\n${question.myAnswer}`
-      : question.questionText;
-
+export default function NewQuestionPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
         <Button variant="outline" size="sm" asChild>
-          <Link href={`/questions/${id}`}>
+          <Link href="/questions">
             <ArrowLeft className="h-4 w-4 mr-1.5" />
             Back
           </Link>
         </Button>
         <div>
           <h1 className="text-2xl font-bold text-[#1c2024]">
-            Edit Question
+            Add Question
           </h1>
           <p className="text-xs text-[#717682] mt-0.5">
-            Update category and question content
+            Quickly dump your questions, answers, and notes
           </p>
         </div>
       </div>
 
-      <form action={updateActionWithId} className="space-y-6">
+      <form action={createQuestionFromForm} className="space-y-6">
         <Card className="rounded-[28px] border border-black/5 bg-white shadow-sm p-6 space-y-5">
           {/* 1. Category */}
           <div className="space-y-2">
@@ -57,7 +38,7 @@ export default async function EditQuestionPage({
             <select
               id="category"
               name="category"
-              defaultValue={question.category}
+              defaultValue={QuestionCategory.MACHINE_CODING}
               className="w-full rounded-2xl border border-zinc-200 bg-[#fcfbf7] px-3.5 py-2.5 text-sm font-medium text-[#1c2024] focus:outline-none focus:ring-2 focus:ring-[#ffcf36]/50"
             >
               {QUESTION_CATEGORIES.map(({ value, label }) => (
@@ -79,7 +60,6 @@ export default async function EditQuestionPage({
             <Textarea
               id="questionText"
               name="questionText"
-              defaultValue={initialContent}
               required
               rows={12}
               placeholder="Dump all question text, answers, and prep notes here..."
@@ -89,10 +69,10 @@ export default async function EditQuestionPage({
 
           <div className="flex justify-end gap-3 pt-3 border-t border-black/5">
             <Button variant="outline" asChild>
-              <Link href={`/questions/${id}`}>Cancel</Link>
+              <Link href="/questions">Cancel</Link>
             </Button>
             <Button variant="yellow" type="submit">
-              Save Changes
+              Save Question
             </Button>
           </div>
         </Card>

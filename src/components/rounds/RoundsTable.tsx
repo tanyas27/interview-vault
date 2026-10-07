@@ -2,7 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Calendar, ChevronRight, CheckCircle2, XCircle, Clock, Search, Building2, HelpCircle, Filter, X } from 'lucide-react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { cn } from '@/lib/utils';
+import { Calendar, ChevronRight, ChevronDown, CheckCircle2, XCircle, Clock, Search, Building2, HelpCircle, Filter, X, Check } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 
@@ -34,6 +36,7 @@ export function RoundsTable({ initialRounds }: RoundsTableProps) {
   const [selectedCompany, setSelectedCompany] = useState<string>('ALL');
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isCompanyOpen, setIsCompanyOpen] = useState(false);
 
   // Extract unique companies with their counts
   const companyCounts = useMemo(() => {
@@ -72,94 +75,152 @@ export function RoundsTable({ initialRounds }: RoundsTableProps) {
   return (
     <div className="space-y-4">
       {/* 1. Filter Toolbar */}
-      <div className="p-4 rounded-3xl bg-white/60 backdrop-blur-2xl border border-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] space-y-3 min-w-0">
-        {/* Company Pills Filter */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none min-w-0">
-          <span className="text-xs font-bold text-[#1c2024] flex items-center gap-1.5 shrink-0 mr-1">
-            <Building2 className="w-3.5 h-3.5 text-[#ffcf36]" />
-            Company:
-          </span>
+      <div className="relative z-10 p-4 rounded-3xl bg-white/60 backdrop-blur-2xl border border-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] space-y-3 min-w-0">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1 min-w-0">
+            {/* Search bar */}
+            <div className="relative flex-1 min-w-[200px] max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#8e939f]" />
+              <Input
+                type="text"
+                placeholder="Search rounds, questions, roles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 h-9 text-xs rounded-full bg-[#fcfbf7] border-black/10 shadow-2xs"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
 
-          <button
-            type="button"
-            onClick={() => setSelectedCompany('ALL')}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-              selectedCompany === 'ALL'
-                ? 'bg-[#1c2024] text-white shadow-xs'
-                : 'bg-black/5 text-[#5d636f] hover:bg-black/10 hover:text-[#1c2024]'
-            }`}
-          >
-            All Companies ({initialRounds.length})
-          </button>
+            {/* Radix Portal Company Dropdown */}
+            <DropdownMenu.Root open={isCompanyOpen} onOpenChange={setIsCompanyOpen}>
+              <DropdownMenu.Trigger asChild>
+                <button
+                  type="button"
+                  className={cn(
+                    "h-9 px-3.5 rounded-full bg-[#fcfbf7] hover:bg-white border flex items-center gap-2 text-xs font-semibold text-[#1c2024] shadow-2xs transition-all cursor-pointer focus:outline-none shrink-0",
+                    isCompanyOpen
+                      ? "border-[#ffcf36] ring-2 ring-[#ffcf36]/30 bg-white"
+                      : "border-black/10 hover:border-black/20"
+                  )}
+                >
+                  <Building2 className="w-3.5 h-3.5 text-[#ffcf36] shrink-0" />
+                  <span className="truncate max-w-[130px]">
+                    {selectedCompany === 'ALL' ? 'All Companies' : selectedCompany}
+                  </span>
+                  <span className="text-[10px] text-[#717682] font-semibold px-1.5 py-0.5 rounded-full bg-black/5">
+                    {selectedCompany === 'ALL'
+                      ? initialRounds.length
+                      : companyCounts.find(([c]) => c.toLowerCase() === selectedCompany.toLowerCase())?.[1] || 0}
+                  </span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 text-zinc-400 transition-transform duration-200 ${
+                      isCompanyOpen ? 'rotate-180 text-[#1c2024]' : ''
+                    }`}
+                  />
+                </button>
+              </DropdownMenu.Trigger>
 
-          {companyCounts.map(([company, count]) => {
-            const isSelected = selectedCompany.toLowerCase() === company.toLowerCase();
-            return (
-              <button
-                key={company}
-                type="button"
-                onClick={() => setSelectedCompany(company)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-                  isSelected
-                    ? 'bg-[#ffcf36] text-[#1c2024] shadow-xs ring-1 ring-black/10'
-                    : 'bg-black/5 text-[#5d636f] hover:bg-black/10 hover:text-[#1c2024]'
-                }`}
-              >
-                {company} <span className="text-[10px] opacity-75">({count})</span>
-              </button>
-            );
-          })}
-        </div>
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content
+                  align="start"
+                  sideOffset={6}
+                  className="z-[100] min-w-[220px] max-w-xs rounded-2xl bg-white border border-black/10 shadow-[0_20px_50px_rgba(0,0,0,0.18),0_4px_12px_rgba(0,0,0,0.08)] p-1.5 focus:outline-none"
+                >
+                  <div className="max-h-64 overflow-y-auto space-y-0.5 pr-0.5 overscroll-contain">
+                    <DropdownMenu.Item
+                      onSelect={() => setSelectedCompany('ALL')}
+                      className={cn(
+                        "flex items-center justify-between gap-3 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer outline-none select-none",
+                        selectedCompany === 'ALL'
+                          ? "bg-[#1c2024] text-white font-semibold data-[highlighted]:bg-[#1c2024]"
+                          : "text-[#1c2024] data-[highlighted]:bg-black/5 hover:bg-black/5 font-medium"
+                      )}
+                    >
+                      <div className="flex items-center gap-2 truncate">
+                        <span className="w-3.5 h-3.5 flex items-center justify-center shrink-0">
+                          {selectedCompany === 'ALL' && <Check className="w-3.5 h-3.5 text-[#ffcf36] stroke-[2.5]" />}
+                        </span>
+                        <span className="truncate">All Companies</span>
+                      </div>
+                      <span
+                        className={cn(
+                          "text-[10px] px-1.5 py-0.5 rounded-full shrink-0",
+                          selectedCompany === 'ALL' ? "bg-white/20 text-white font-semibold" : "bg-black/5 text-[#717682]"
+                        )}
+                      >
+                        {initialRounds.length}
+                      </span>
+                    </DropdownMenu.Item>
 
-        {/* Search & Status Filters */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-black/5">
-          {/* Search bar */}
-          <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#8e939f]" />
-            <Input
-              type="text"
-              placeholder="Search rounds, questions, roles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-9 text-xs rounded-full bg-[#fcfbf7] border-black/10"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
+                    {companyCounts.map(([company, count]) => {
+                      const isSelected = selectedCompany.toLowerCase() === company.toLowerCase();
+                      return (
+                        <DropdownMenu.Item
+                          key={company}
+                          onSelect={() => setSelectedCompany(company)}
+                          className={cn(
+                            "flex items-center justify-between gap-3 px-2.5 py-2 rounded-xl text-xs transition-colors cursor-pointer outline-none select-none",
+                            isSelected
+                              ? "bg-[#1c2024] text-white font-semibold data-[highlighted]:bg-[#1c2024]"
+                              : "text-[#1c2024] data-[highlighted]:bg-black/5 hover:bg-black/5 font-medium"
+                          )}
+                        >
+                          <div className="flex items-center gap-2 truncate">
+                            <span className="w-3.5 h-3.5 flex items-center justify-center shrink-0">
+                              {isSelected && <Check className="w-3.5 h-3.5 text-[#ffcf36] stroke-[2.5]" />}
+                            </span>
+                            <span className="truncate">{company}</span>
+                          </div>
+                          <span
+                            className={cn(
+                              "text-[10px] px-1.5 py-0.5 rounded-full shrink-0",
+                              isSelected ? "bg-white/20 text-white font-semibold" : "bg-black/5 text-[#717682]"
+                            )}
+                          >
+                            {count}
+                          </span>
+                        </DropdownMenu.Item>
+                      );
+                    })}
+                  </div>
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
           </div>
 
           {/* Status buttons */}
-          <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto">
-            <span className="text-xs font-semibold text-[#8e939f] shrink-0 mr-1 hidden md:inline">
+          <div className="flex items-center gap-1.5 overflow-x-auto shrink-0 pb-0.5 sm:pb-0">
+            <span className="text-xs font-semibold text-[#8e939f] shrink-0 mr-1 hidden sm:inline">
               Outcome:
             </span>
             {(['ALL', 'PASSED', 'FAILED', 'PENDING'] as const).map((status) => {
               const active = selectedStatus === status;
               const label =
                 status === 'ALL'
-                  ? 'All Outcomes'
+                  ? 'All'
                   : status === 'PASSED'
-                  ? '✓ Passed'
-                  : status === 'FAILED'
-                  ? '✗ Failed'
-                  : '⏳ Pending';
+                    ? '✓ Passed'
+                    : status === 'FAILED'
+                      ? '✗ Failed'
+                      : 'Pending';
 
               return (
                 <button
                   key={status}
                   type="button"
                   onClick={() => setSelectedStatus(status)}
-                  className={`px-2.5 py-1 text-xs font-medium rounded-full transition-all shrink-0 ${
-                    active
+                  className={`px-2.5 py-1 text-xs font-medium rounded-full transition-all shrink-0 ${active
                       ? 'bg-zinc-800 text-white'
                       : 'text-[#717682] hover:bg-black/5 hover:text-[#1c2024]'
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
@@ -223,11 +284,11 @@ export function RoundsTable({ initialRounds }: RoundsTableProps) {
           {filteredRounds.map((round) => {
             const formattedDate = round.scheduledDate
               ? new Date(round.scheduledDate).toLocaleDateString('en-US', {
-                  weekday: 'short',
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                })
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              })
               : 'Date pending';
 
             const questionsCount = round.roundQuestions?.length || 0;
@@ -263,7 +324,7 @@ export function RoundsTable({ initialRounds }: RoundsTableProps) {
 
                   {/* Center Column: Round Type Badge & Scheduled Date */}
                   <div className="flex items-center gap-4 text-xs text-[#5d636f] md:w-1/3">
-                    <span className="px-2.5 py-1 rounded-full bg-zinc-100 border border-zinc-200/60 font-semibold text-[11px] text-[#1c2024] uppercase tracking-wide">
+                    <span className="px-2.5 py-1 rounded-full bg-[#f8f7fb] text-[#6d6282] border border-[#ece8f4] font-semibold text-[10.5px] uppercase tracking-wide">
                       {round.roundType.replace(/_/g, ' ')}
                     </span>
 
@@ -325,8 +386,7 @@ function renderOutcomeBadge(status: string) {
       );
     default:
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#ffcf36]/25 text-[#1c2024] border border-[#ffcf36]/40 text-[11px] font-bold whitespace-nowrap shrink-0">
-          <Clock className="w-3 h-3 text-[#8a6b00]" />
+        <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#ffcf36]/25 text-[#1c2024] border border-[#ffcf36]/40 text-[11px] font-bold whitespace-nowrap shrink-0">
           Pending
         </span>
       );

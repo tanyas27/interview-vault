@@ -125,7 +125,7 @@ export async function extractQuestionsFromText(roundId: string, text: string) {
     await db.question.createMany({
       data: newQuestionTexts.map((questionText) => ({
         questionText,
-        category: QuestionCategory.GENERAL,
+        category: QuestionCategory.MACHINE_CODING,
         userId: user.userId,
       })),
     });
@@ -225,6 +225,32 @@ export async function bulkUpdateQuestions(
   revalidatePath('/questions');
 }
 
+export async function createQuestionFromForm(formData: FormData) {
+  const user = await getCurrentUser();
+  if (!user) throw new Error('Unauthorized');
+
+  const raw = Object.fromEntries(formData);
+  const parsed = questionFormSchema.safeParse(raw);
+  if (!parsed.success) {
+    throw new Error(parsed.error.issues[0]?.message ?? 'Invalid question data.');
+  }
+
+  const d = parsed.data;
+
+  const newQuestion = await db.question.create({
+    data: {
+      userId: user.userId,
+      questionText: d.questionText,
+      category: d.category as QuestionCategory,
+      myAnswer: d.myAnswer || '',
+    },
+  });
+
+  revalidatePath('/questions');
+  revalidatePath('/dashboard');
+  redirect(`/questions/${newQuestion.id}`);
+}
+
 export async function updateQuestionFromForm(id: string, formData: FormData) {
   const user = await getCurrentUser();
   if (!user) throw new Error('Unauthorized');
@@ -236,9 +262,6 @@ export async function updateQuestionFromForm(id: string, formData: FormData) {
   }
 
   const d = parsed.data;
-  const confidenceLevel = d.confidenceLevel
-    ? Math.min(5, Math.max(1, parseInt(d.confidenceLevel, 10)))
-    : null;
 
   await db.question.update({
     where: { id, userId: user.userId },
@@ -246,11 +269,6 @@ export async function updateQuestionFromForm(id: string, formData: FormData) {
       questionText: d.questionText,
       category: d.category as QuestionCategory,
       myAnswer: d.myAnswer || '',
-      modelAnswer: d.modelAnswer || '',
-      keyPoints: d.keyPoints || '',
-      tags: d.tags || '',
-      confidenceLevel,
-      needsReview: d.needsReview === 'true',
     },
   });
 

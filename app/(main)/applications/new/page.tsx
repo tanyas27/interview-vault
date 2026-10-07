@@ -33,10 +33,10 @@ export default async function NewApplicationPage({
       <div>
         {fromReferral && (
           <Link
-            href={`/referrals/${referralId}`}
+            href="/referrals"
             className="inline-flex items-center gap-1 text-xs text-[#717682] hover:text-[#1c2024] mb-4 transition-colors"
           >
-            <ChevronLeft className="w-3.5 h-3.5" /> Back to Referral
+            <ChevronLeft className="w-3.5 h-3.5" /> Back to Referrals
           </Link>
         )}
         <h1 className="text-3xl font-extrabold text-[#1c2024] tracking-tight">New Application</h1>

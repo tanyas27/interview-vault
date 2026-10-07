@@ -122,11 +122,11 @@ async function DashboardWidgets() {
           userProfile={user}
         />
       </div>
-      <div className="h-full min-h-[360px]">
+      <div className="h-[360px]">
         <TopicsWidget />
       </div>
-      <div className="h-full min-h-[360px]">
-        <ReferralsWidget referrals={referrals.slice(0, 5)} pendingCount={stats.pendingReferrals} />
+      <div className="h-[360px]">
+        <ReferralsWidget referrals={referrals} pendingCount={stats.pendingReferrals} />
       </div>
       <div className="space-y-4">
         <div className="rounded-[30px] border border-black/5 bg-white p-5 shadow-xs">

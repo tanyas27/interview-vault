@@ -53,7 +53,7 @@ export function TopicsWidget() {
   const done = topics.filter((t) => t.done);
 
   return (
-    <div className="h-full min-h-[360px] flex flex-col rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] gap-4">
+    <div className="h-[360px] flex flex-col rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] gap-4">
       {/* Header */}
       <div className="flex items-center justify-between shrink-0">
         <div>

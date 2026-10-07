@@ -96,7 +96,7 @@ export async function createRound(formData: FormData) {
         userId: user.userId,
         questionText: initialQuestionText,
         myAnswer: initialAnswer || '',
-        category: QuestionCategory.GENERAL,
+        category: QuestionCategory.MACHINE_CODING,
       },
     });
 

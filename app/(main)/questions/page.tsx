@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { getQuestions } from '@/actions/questions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, ChevronRight, ChevronLeft } from 'lucide-react';
+import { BookOpen, ChevronRight, ChevronLeft, Plus } from 'lucide-react';
 import { QuestionCategory } from '@prisma/client';
+import { formatQuestionCategory } from '@/lib/categories';
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 
@@ -71,13 +72,8 @@ async function QuestionsList({
                     {question.questionText}
                   </span>
                   <Badge variant="outline" className="text-[10px] px-2 py-0.5 shrink-0 uppercase tracking-wide">
-                    {question.category.replace(/_/g, ' ')}
+                    {formatQuestionCategory(question.category)}
                   </Badge>
-                  {question.needsReview && (
-                    <Badge variant="warning" className="text-[10px] px-1.5 py-0.5 shrink-0">
-                      Needs Review
-                    </Badge>
-                  )}
                 </div>
 
                 {/* Metadata row */}
@@ -87,14 +83,6 @@ async function QuestionsList({
                   <span>
                     {question.roundQuestions.length} round{question.roundQuestions.length !== 1 ? 's' : ''}
                   </span>
-                  {question.confidenceLevel && (
-                    <>
-                      <span>•</span>
-                      <span className="font-medium text-amber-700">
-                        Confidence: {question.confidenceLevel}/5
-                      </span>
-                    </>
-                  )}
                   {question.roundQuestions.length > 0 && (
                     <>
                       <span>•</span>
@@ -174,9 +162,16 @@ export default async function QuestionsPage({
         <div>
           <h1 className="text-3xl font-extrabold text-[#1c2024] tracking-tight">Question Bank</h1>
           <p className="mt-1 text-sm text-[#717682]">
-            Your central repository of extracted interview questions, confidence scores, and company tags
+            Your central repository of interview questions, answers, and prep notes
           </p>
         </div>
+        <Link
+          href="/questions/new"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#1c2024] text-white hover:bg-black text-xs font-semibold shadow-xs transition-colors shrink-0 self-start sm:self-auto"
+        >
+          <Plus className="w-3.5 h-3.5 text-[#ffcf36]" />
+          Add Question
+        </Link>
       </div>
 
       {/* Questions list streams in */}

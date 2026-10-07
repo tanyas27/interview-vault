@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Plus, Trash2, Edit3, MessageCircleQuestion, Sparkles } from 'lucide-react';
 import { QuestionCategory } from '@prisma/client';
+import { QUESTION_CATEGORIES } from '@/lib/categories';
 import { QuestionScratchpad } from './QuestionScratchpad';
 
 interface LinkedQuestion {
@@ -42,7 +43,7 @@ export function RoundQuestionsManager({
 
   const [questionText, setQuestionText] = useState('');
   const [myAnswer, setMyAnswer] = useState('');
-  const [category, setCategory] = useState<QuestionCategory>(QuestionCategory.GENERAL);
+  const [category, setCategory] = useState<QuestionCategory>(QuestionCategory.MACHINE_CODING);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,9 +158,9 @@ export function RoundQuestionsManager({
                   onChange={(e) => setCategory(e.target.value as QuestionCategory)}
                   className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-1.5 text-xs text-[#1c2024]"
                 >
-                  {Object.values(QuestionCategory).map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat.replace(/_/g, ' ')}
+                  {QUESTION_CATEGORIES.map(({ value, label }) => (
+                    <option key={value} value={value}>
+                      {label}
                     </option>
                   ))}
                 </select>

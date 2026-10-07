@@ -35,8 +35,8 @@ export function ReferralsWidget({
   pendingCount: number;
 }) {
   return (
-    <div className="h-full flex flex-col rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] hover:bg-white/70 hover:shadow-[0_14px_36px_rgba(0,0,0,0.04)] transition-all">
-      <div className="flex items-center justify-between mb-4">
+    <div className="h-[360px] flex flex-col rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] hover:bg-white/70 hover:shadow-[0_14px_36px_rgba(0,0,0,0.04)] transition-all">
+      <div className="flex items-center justify-between mb-4 shrink-0">
         <div>
           <h3 className="font-bold text-base text-[#1c2024]">Referrals</h3>
           {pendingCount > 0 && (
@@ -55,7 +55,7 @@ export function ReferralsWidget({
       </div>
 
       {referrals.length === 0 ? (
-        <div className="flex-1 flex flex-col items-center justify-center gap-3 text-center py-4">
+        <div className="flex-1 min-h-0 flex flex-col items-center justify-center gap-3 text-center py-4">
           <p className="text-xs text-[#717682]">No referrals tracked yet</p>
           <Link
             href="/referrals/new"
@@ -65,11 +65,11 @@ export function ReferralsWidget({
           </Link>
         </div>
       ) : (
-        <div className="flex-1 space-y-2.5 overflow-y-auto max-h-[260px] pr-1">
+        <div className="flex-1 min-h-0 space-y-2.5 overflow-y-auto pr-1">
           {referrals.map((r) => (
             <Link
               key={r.id}
-              href={`/referrals/${r.id}`}
+              href={`/referrals/${r.id}/edit`}
               className="flex items-center gap-3 p-2.5 rounded-2xl bg-white/50 hover:bg-white/85 border border-white/80 hover:border-white shadow-2xs transition-all group"
             >
               <div className="w-8 h-8 rounded-xl bg-white border border-white/80 shadow-2xs flex items-center justify-center text-[#1c2024] font-bold text-xs shrink-0">
@@ -87,7 +87,7 @@ export function ReferralsWidget({
         </div>
       )}
 
-      <div className="pt-3 border-t border-black/5 mt-3">
+      <div className="pt-3 border-t border-black/5 mt-auto shrink-0">
         <Link
           href="/referrals/new"
           className="text-xs font-bold text-[#1c2024] hover:text-black flex items-center gap-1"

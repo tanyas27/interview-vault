@@ -95,8 +95,7 @@ export async function updateReferral(id: string, formData: FormData) {
   });
 
   revalidatePath('/referrals');
-  revalidatePath(`/referrals/${id}`);
-  redirect(`/referrals/${id}`);
+  redirect('/referrals');
 }
 
 export async function deleteReferral(id: string) {

@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getReferral, updateReferral } from '@/actions/referrals';
+import { getReferral, updateReferral, deleteReferral } from '@/actions/referrals';
 import { ReferralForm } from '@/components/referrals/ReferralForm';
+import { DeleteReferralButton } from '@/components/referrals/DeleteReferralButton';
 import { ChevronLeft } from 'lucide-react';
 
 export default async function EditReferralPage({ params }: { params: Promise<{ id: string }> }) {
@@ -10,15 +11,16 @@ export default async function EditReferralPage({ params }: { params: Promise<{ i
   if (!referral) notFound();
 
   const updateWithId = updateReferral.bind(null, id);
+  const deleteWithId = deleteReferral.bind(null, id);
 
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
         <Link
-          href={`/referrals/${id}`}
+          href="/referrals"
           className="inline-flex items-center gap-1 text-xs text-[#717682] hover:text-[#1c2024] mb-4 transition-colors"
         >
-          <ChevronLeft className="w-3.5 h-3.5" /> Back to Referral
+          <ChevronLeft className="w-3.5 h-3.5" /> Back to Referrals
         </Link>
         <h1 className="text-3xl font-extrabold text-[#1c2024] tracking-tight">Edit Referral</h1>
       </div>
@@ -27,6 +29,7 @@ export default async function EditReferralPage({ params }: { params: Promise<{ i
         initialData={referral}
         submitLabel="Save Changes"
       />
+      <DeleteReferralButton deleteAction={deleteWithId} />
     </div>
   );
 }
