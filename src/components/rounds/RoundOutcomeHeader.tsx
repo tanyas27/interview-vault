@@ -55,7 +55,7 @@ export function RoundOutcomeHeader({
     : null;
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-[32px] bg-white border border-black/5 shadow-sm">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-[32px] bg-white/60 backdrop-blur-2xl border border-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)]">
       <div>
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold uppercase tracking-wider text-[#ffcf36] bg-[#1c2024] px-2.5 py-1 rounded-full">
@@ -82,8 +82,8 @@ export function RoundOutcomeHeader({
             onClick={() => handleSetOutcome(RoundStatus.PASSED)}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
               status === RoundStatus.PASSED
-                ? 'bg-emerald-600 text-white shadow-xs'
-                : 'text-zinc-600 hover:text-emerald-700 hover:bg-emerald-50'
+                ? 'bg-[#749c36] text-white shadow-xs'
+                : 'text-zinc-600 hover:text-[#749c36] hover:bg-[#EBF7D5]'
             }`}
           >
             <CheckCircle2 className="w-3.5 h-3.5" />

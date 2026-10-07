@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { ConversionFunnel } from '@/components/analytics/ConversionFunnel';
+import { Check } from 'lucide-react';
 
 // ─── Skeletons ────────────────────────────────────────────────────────────────
 
@@ -38,7 +39,7 @@ async function AnalyticsCharts({ userId }: { userId: string }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Question Frequency */}
-      <Card className="rounded-[32px] border border-black/5 bg-white shadow-sm">
+      <Card className="rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)]">
         <CardHeader>
           <CardTitle>Question Frequency by Category</CardTitle>
           <CardDescription>Which categories are most frequently asked in your rounds</CardDescription>
@@ -77,7 +78,7 @@ async function AnalyticsCharts({ userId }: { userId: string }) {
       </Card>
 
       {/* Weak Areas */}
-      <Card className="rounded-[32px] border border-black/5 bg-white shadow-sm">
+      <Card className="rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)]">
         <CardHeader>
           <CardTitle>Focus Areas &amp; Confidence</CardTitle>
           <CardDescription>Questions with lower confidence ratings or flagged for revision</CardDescription>
@@ -85,8 +86,8 @@ async function AnalyticsCharts({ userId }: { userId: string }) {
         <CardContent>
           {Object.entries(weakAreas.byCategory).length === 0 ? (
             <div className="text-center py-8">
-              <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto mb-2 text-sm font-bold">
-                ✓
+              <div className="w-10 h-10 rounded-full bg-[#EBF7D5] text-[#749c36] flex items-center justify-center mx-auto mb-2 text-sm font-bold">
+                <Check className="w-5 h-5 text-[#749c36] stroke-[2.5]" />
               </div>
               <p className="text-xs font-semibold text-[#1c2024]">All topics in good standing!</p>
               <p className="text-[11px] text-[#717682] mt-1">Keep tracking confidence levels in rounds.</p>

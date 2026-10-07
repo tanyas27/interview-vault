@@ -25,7 +25,7 @@ export default async function SettingsPage() {
 
       {/* 1. Basic Profile & Compensation */}
       <div id="profile">
-        <Card className="rounded-[32px] border border-black/5 bg-white shadow-sm overflow-hidden">
+        <Card className="rounded-[32px] overflow-hidden">
           <CardHeader className="border-b border-black/5 pb-4">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-[#ffcf36]/25 flex items-center justify-center">
@@ -46,7 +46,7 @@ export default async function SettingsPage() {
       </div>
 
       {/* 2. Data Export */}
-      <Card className="rounded-[32px] border border-black/5 bg-white shadow-sm">
+      <Card className="rounded-[32px]">
         <CardHeader>
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-full bg-[#1c2024] text-white flex items-center justify-center">
@@ -61,7 +61,7 @@ export default async function SettingsPage() {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-black/5 rounded-2xl bg-[#fcfbf7] gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-white/80 rounded-2xl bg-white/60 shadow-2xs gap-3">
             <div>
               <h4 className="text-sm font-bold text-[#1c2024]">Export as JSON</h4>
               <p className="text-xs text-[#717682] mt-0.5">
@@ -76,7 +76,7 @@ export default async function SettingsPage() {
             </Button>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-black/5 rounded-2xl bg-[#fcfbf7] gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-white/80 rounded-2xl bg-white/60 shadow-2xs gap-3">
             <div>
               <h4 className="text-sm font-bold text-[#1c2024]">Export as CSV</h4>
               <p className="text-xs text-[#717682] mt-0.5">
@@ -94,11 +94,11 @@ export default async function SettingsPage() {
       </Card>
 
       {/* 3. Account Privacy & Vault Isolation */}
-      <Card className="rounded-[32px] border border-black/5 bg-white shadow-sm">
+      <Card className="rounded-[32px]">
         <CardHeader>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center border border-emerald-200">
-              <Shield className="h-4 w-4 text-emerald-700" />
+            <div className="w-8 h-8 rounded-full bg-[#EBF7D5] text-[#749c36] flex items-center justify-center">
+              <Shield className="h-4 w-4 text-[#749c36]" />
             </div>
             <div>
               <CardTitle className="text-lg">Private Vault Security</CardTitle>

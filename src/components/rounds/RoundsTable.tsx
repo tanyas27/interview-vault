@@ -72,7 +72,7 @@ export function RoundsTable({ initialRounds }: RoundsTableProps) {
   return (
     <div className="space-y-4">
       {/* 1. Filter Toolbar */}
-      <div className="p-4 rounded-3xl bg-white border border-black/5 shadow-xs space-y-3 min-w-0">
+      <div className="p-4 rounded-3xl bg-white/60 backdrop-blur-2xl border border-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] space-y-3 min-w-0">
         {/* Company Pills Filter */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none min-w-0">
           <span className="text-xs font-bold text-[#1c2024] flex items-center gap-1.5 shrink-0 mr-1">
@@ -196,8 +196,8 @@ export function RoundsTable({ initialRounds }: RoundsTableProps) {
 
       {/* 3. Rows Table */}
       {filteredRounds.length === 0 ? (
-        <div className="p-12 text-center rounded-[28px] bg-white border border-black/5 shadow-xs space-y-3">
-          <div className="w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center mx-auto text-zinc-400">
+        <div className="p-12 text-center rounded-[32px] bg-white/60 backdrop-blur-2xl border border-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] space-y-3">
+          <div className="w-12 h-12 rounded-full bg-white/70 border border-white/80 flex items-center justify-center mx-auto text-zinc-400">
             <Filter className="w-6 h-6" />
           </div>
           <h3 className="text-base font-bold text-[#1c2024]">No rounds match your filter</h3>
@@ -237,7 +237,7 @@ export function RoundsTable({ initialRounds }: RoundsTableProps) {
               <Link
                 key={round.id}
                 href={`/rounds/${round.id}`}
-                className="group block rounded-2xl bg-white hover:bg-[#fcfbf7] border border-black/[0.06] hover:border-black/15 p-3.5 transition-all shadow-2xs hover:shadow-sm"
+                className="group block rounded-2xl bg-white/60 backdrop-blur-2xl hover:bg-white/85 border border-white/80 hover:border-white p-3.5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.02)] hover:shadow-sm"
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                   {/* Left Column: Company avatar, Name, Role & Round # */}
@@ -304,8 +304,8 @@ function renderOutcomeBadge(status: string) {
   switch (status) {
     case 'PASSED':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[11px] font-bold whitespace-nowrap shrink-0">
-          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EBF7D5] text-[#749c36] text-[11px] font-bold whitespace-nowrap shrink-0">
+          <CheckCircle2 className="w-3 h-3 text-[#749c36]" />
           Passed
         </span>
       );
@@ -318,8 +318,8 @@ function renderOutcomeBadge(status: string) {
       );
     case 'COMPLETED':
       return (
-        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[11px] font-bold whitespace-nowrap shrink-0">
-          <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#EBF7D5] text-[#749c36] text-[11px] font-bold whitespace-nowrap shrink-0">
+          <CheckCircle2 className="w-3 h-3 text-[#749c36]" />
           Completed
         </span>
       );

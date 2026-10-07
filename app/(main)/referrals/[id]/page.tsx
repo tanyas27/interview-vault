@@ -57,7 +57,7 @@ export default async function ReferralDetailPage({ params }: { params: Promise<{
       </div>
 
       {/* Details card */}
-      <div className="rounded-[28px] border border-black/5 bg-white p-6 shadow-sm space-y-4">
+      <div className="rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-xs font-semibold text-[#8e939f] uppercase tracking-wider mb-1">Status</p>
@@ -95,7 +95,7 @@ export default async function ReferralDetailPage({ params }: { params: Promise<{
 
       {/* Convert to Application */}
       {canConvert && (
-        <div className="rounded-[28px] border border-[#ffcf36]/40 bg-[#ffcf36]/8 p-5 flex items-center justify-between gap-4">
+        <div className="rounded-[28px] border border-[#ffcf36]/40 bg-white/50 backdrop-blur-2xl p-5 flex items-center justify-between gap-4 shadow-2xs">
           <div>
             <p className="text-sm font-bold text-[#1c2024]">Ready to apply?</p>
             <p className="text-xs text-[#717682] mt-0.5">Convert this referral into a tracked application — fields will be pre-filled.</p>
@@ -110,11 +110,11 @@ export default async function ReferralDetailPage({ params }: { params: Promise<{
 
       {/* Linked application */}
       {referral.application && (
-        <div className="rounded-[28px] border border-black/5 bg-white p-5">
+        <div className="rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)]">
           <p className="text-xs font-semibold text-[#8e939f] uppercase tracking-wider mb-3">Linked Application</p>
           <Link
             href={`/applications/${referral.application.id}`}
-            className="flex items-center justify-between p-3 rounded-2xl bg-[#fcfbf7] hover:bg-zinc-100 transition-colors group"
+            className="flex items-center justify-between p-3 rounded-2xl bg-white/60 hover:bg-white/85 border border-white/80 transition-all group shadow-2xs"
           >
             <div>
               <p className="text-sm font-bold text-[#1c2024]">{referral.application.companyName}</p>

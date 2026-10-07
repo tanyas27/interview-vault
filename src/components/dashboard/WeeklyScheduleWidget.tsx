@@ -81,7 +81,7 @@ export function WeeklyScheduleWidget({ rounds = [] }: { rounds?: ScheduleRound[]
   };
 
   return (
-    <div className="rounded-[32px] border border-black/5 bg-white p-6 shadow-sm">
+    <div className="rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)]">
       {/* Month Header Navigation */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
@@ -159,7 +159,7 @@ export function WeeklyScheduleWidget({ rounds = [] }: { rounds?: ScheduleRound[]
                     <div
                       className={`w-2.5 h-2.5 rounded-full shrink-0 ${
                         round.status === 'PASSED'
-                          ? 'bg-emerald-400'
+                          ? 'bg-[#749c36]'
                           : round.status === 'FAILED'
                           ? 'bg-rose-400'
                           : 'bg-[#ffcf36]'
@@ -179,7 +179,7 @@ export function WeeklyScheduleWidget({ rounds = [] }: { rounds?: ScheduleRound[]
                     <span
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                         round.status === 'PASSED'
-                          ? 'bg-emerald-500/20 text-emerald-300'
+                          ? 'bg-[#EBF7D5] text-[#749c36]'
                           : round.status === 'FAILED'
                           ? 'bg-rose-500/20 text-rose-300'
                           : 'bg-[#ffcf36]/20 text-[#ffcf36]'

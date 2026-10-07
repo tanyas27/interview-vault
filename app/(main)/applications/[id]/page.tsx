@@ -50,7 +50,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-zinc-500">Status</p>
-                <Badge className="mt-1">{application.status}</Badge>
+                <Badge variant={getStatusVariant(application.status)} className="mt-1">{application.status}</Badge>
               </div>
               <div>
                 <p className="text-sm font-medium text-zinc-500">Priority</p>
@@ -84,7 +84,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
 
         <div className="space-y-6">
           {application.hasReferral && (
-            <Card className="rounded-[28px] border border-black/5 bg-white shadow-sm">
+            <Card>
               <CardHeader>
                 <CardTitle>Referral</CardTitle>
               </CardHeader>
@@ -98,7 +98,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
                 {application.referralNotes && (
                   <div>
                     <p className="text-sm font-medium text-zinc-500">Comment</p>
-                    <p className="mt-1 text-sm text-[#4b515d] whitespace-pre-wrap bg-[#fcfbf7] p-2.5 rounded-xl border border-black/[0.04]">
+                    <p className="mt-1 text-sm text-[#4b515d] whitespace-pre-wrap bg-white/60 p-2.5 rounded-xl border border-white/80 shadow-2xs">
                       {application.referralNotes}
                     </p>
                   </div>
@@ -108,7 +108,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
           )}
 
           {(application.expectedSalary || application.offeredSalary) && (
-            <Card className="rounded-[28px] border border-black/5 bg-white shadow-sm">
+            <Card>
               <CardHeader>
                 <CardTitle>Compensation (INR)</CardTitle>
               </CardHeader>
@@ -179,7 +179,7 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
                     <span
                       className={`inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap shrink-0 ${
                         round.status === 'PASSED'
-                          ? 'bg-emerald-100 text-emerald-800'
+                          ? 'bg-[#EBF7D5] text-[#749c36]'
                           : round.status === 'FAILED'
                           ? 'bg-rose-100 text-rose-800'
                           : 'bg-[#ffcf36]/30 text-[#1c2024]'
@@ -200,4 +200,22 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
       </Card>
     </div>
   );
+}
+
+function getStatusVariant(status: string): 'default' | 'secondary' | 'success' | 'warning' | 'destructive' {
+  switch (status) {
+    case 'APPLIED':
+      return 'secondary';
+    case 'SCREENING':
+    case 'INTERVIEWING':
+      return 'default';
+    case 'OFFER':
+    case 'ACCEPTED':
+      return 'success';
+    case 'REJECTED':
+    case 'WITHDRAWN':
+      return 'destructive';
+    default:
+      return 'secondary';
+  }
 }

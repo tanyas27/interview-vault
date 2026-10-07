@@ -113,7 +113,7 @@ export function RoundQuestionsManager({
 
       {/* Add Question & Answer Form */}
       {isAdding && (
-        <Card className="rounded-[28px] border-2 border-[#ffcf36]/50 bg-white p-5 shadow-md">
+        <Card className="rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)]">
           <form onSubmit={handleAdd} className="space-y-4">
             <div className="flex items-center justify-between border-b border-black/5 pb-2">
               <h4 className="text-sm font-bold text-[#1c2024]">Add Question Asked</h4>
@@ -206,7 +206,7 @@ export function RoundQuestionsManager({
 
       {/* Question & Answer Cards */}
       {roundQuestions.length === 0 ? (
-        <Card className="rounded-[28px] border border-dashed border-zinc-200 bg-white p-8 text-center">
+        <Card className="rounded-[32px] border border-dashed border-white/90 bg-white/50 backdrop-blur-2xl p-8 text-center shadow-2xs">
           <MessageCircleQuestion className="w-10 h-10 text-zinc-300 mx-auto mb-2" />
           <h4 className="text-sm font-bold text-[#1c2024]">No questions recorded yet</h4>
           <p className="text-xs text-[#717682] max-w-sm mx-auto mt-1">
@@ -227,7 +227,7 @@ export function RoundQuestionsManager({
           {roundQuestions.map((rq, idx) => (
             <Card
               key={rq.id}
-              className="rounded-2xl border border-black/5 bg-white p-4 shadow-xs hover:shadow-md transition-shadow"
+              className="rounded-2xl border border-white/85 bg-white/60 backdrop-blur-2xl p-4 shadow-[0_4px_16px_rgba(0,0,0,0.02)] hover:bg-white/80 transition-all"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-1 flex-1">

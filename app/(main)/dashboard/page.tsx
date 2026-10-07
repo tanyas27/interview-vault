@@ -180,7 +180,7 @@ async function DashboardBottom() {
         <WeeklyScheduleWidget rounds={rounds} />
       </div>
 
-      <div className="rounded-[32px] border border-black/5 bg-white p-6 shadow-sm space-y-4">
+      <div className="rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="font-bold text-base text-[#1c2024]">Active Pipeline</h3>
@@ -195,7 +195,7 @@ async function DashboardBottom() {
         </div>
 
         {applications.length === 0 ? (
-          <div className="p-6 text-center rounded-2xl bg-[#fcfbf7] border border-dashed border-zinc-200">
+          <div className="p-6 text-center rounded-2xl bg-white/40 border border-dashed border-white/80">
             <Briefcase className="w-8 h-8 text-zinc-400 mx-auto mb-2" />
             <p className="text-xs text-zinc-600 font-medium">No applications created yet</p>
             <Link href="/applications/new" className="mt-3 inline-block text-xs font-bold text-[#1c2024] underline">
@@ -208,7 +208,7 @@ async function DashboardBottom() {
               <Link
                 key={app.id}
                 href={`/applications/${app.id}`}
-                className="flex items-center justify-between p-3 rounded-2xl bg-[#fcfbf7] hover:bg-zinc-100/70 border border-black/[0.03] transition-colors group"
+                className="flex items-center justify-between p-3 rounded-2xl bg-white/60 hover:bg-white/85 border border-white/80 hover:border-white transition-all group shadow-2xs"
               >
                 <div className="space-y-0.5">
                   <p className="text-xs font-bold text-[#1c2024] group-hover:text-black">{app.companyName}</p>
@@ -221,7 +221,7 @@ async function DashboardBottom() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline" className="text-[10px]">{app.status}</Badge>
-                  <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center group-hover:bg-[#ffcf36] transition-colors">
+                  <div className="w-6 h-6 rounded-full bg-white/80 border border-white/80 flex items-center justify-center group-hover:bg-[#ffcf36] transition-colors shadow-2xs">
                     <ChevronRight className="w-3.5 h-3.5 text-[#1c2024]" />
                   </div>
                 </div>

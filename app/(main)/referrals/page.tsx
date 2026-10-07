@@ -47,7 +47,7 @@ async function ReferralsList({ page }: { page: number }) {
 
   if (referrals.length === 0) {
     return (
-      <div className="rounded-[28px] border border-dashed border-zinc-200 bg-white p-12 text-center">
+      <div className="rounded-[32px] border border-dashed border-white/90 bg-white/50 backdrop-blur-2xl p-12 text-center shadow-2xs">
         <p className="text-sm text-[#717682] font-medium">No referrals yet</p>
         <Link href="/referrals/new" className="mt-3 inline-block text-xs font-bold text-[#1c2024] underline">
           Track your first referral
@@ -64,9 +64,9 @@ async function ReferralsList({ page }: { page: number }) {
           <Link
             key={r.id}
             href={`/referrals/${r.id}`}
-            className="flex items-center gap-4 p-4 rounded-[24px] bg-white border border-black/5 shadow-sm hover:shadow-md transition-all group"
+            className="flex items-center gap-4 p-4 rounded-[28px] bg-white/60 backdrop-blur-2xl hover:bg-white/85 border border-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] hover:shadow-[0_14px_36px_rgba(0,0,0,0.04)] transition-all group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-[#1c2024] flex items-center justify-center text-white font-bold text-sm shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-white border border-white/80 shadow-2xs flex items-center justify-center text-[#1c2024] font-bold text-sm shrink-0">
               {r.company.charAt(0).toUpperCase()}
             </div>
 

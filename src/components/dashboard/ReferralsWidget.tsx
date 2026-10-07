@@ -35,7 +35,7 @@ export function ReferralsWidget({
   pendingCount: number;
 }) {
   return (
-    <div className="h-full flex flex-col rounded-[32px] border border-black/5 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+    <div className="h-full flex flex-col rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] hover:bg-white/70 hover:shadow-[0_14px_36px_rgba(0,0,0,0.04)] transition-all">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-bold text-base text-[#1c2024]">Referrals</h3>
@@ -48,7 +48,7 @@ export function ReferralsWidget({
         <Link
           href="/referrals"
           aria-label="View all referrals"
-          className="w-8 h-8 rounded-full border border-black/10 bg-white flex items-center justify-center text-[#1c2024] hover:bg-black/5 transition-colors"
+          className="w-8 h-8 rounded-full border border-white/80 bg-white/70 hover:bg-white flex items-center justify-center text-[#1c2024] shadow-2xs transition-colors"
         >
           <ArrowUpRight className="w-4 h-4" />
         </Link>
@@ -70,9 +70,9 @@ export function ReferralsWidget({
             <Link
               key={r.id}
               href={`/referrals/${r.id}`}
-              className="flex items-center gap-3 p-2.5 rounded-2xl hover:bg-[#fcfbf7] transition-colors group"
+              className="flex items-center gap-3 p-2.5 rounded-2xl bg-white/50 hover:bg-white/85 border border-white/80 hover:border-white shadow-2xs transition-all group"
             >
-              <div className="w-8 h-8 rounded-xl bg-[#1c2024] flex items-center justify-center text-white font-bold text-xs shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-white border border-white/80 shadow-2xs flex items-center justify-center text-[#1c2024] font-bold text-xs shrink-0">
                 {r.company.charAt(0).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">

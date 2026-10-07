@@ -37,7 +37,7 @@ export function ApplicationForm({ action, initialData, submitLabel = 'Create App
     <form action={action} className="space-y-6">
       {referralId && <input type="hidden" name="referralId" value={referralId} />}
       {/* Basic Information */}
-      <Card className="rounded-[28px] border border-black/5 bg-white shadow-sm">
+      <Card>
         <CardHeader>
           <CardTitle>Basic Information</CardTitle>
         </CardHeader>
@@ -103,7 +103,7 @@ export function ApplicationForm({ action, initialData, submitLabel = 'Create App
       </Card>
 
       {/* Referral Information */}
-      <Card className="rounded-[28px] border border-black/5 bg-white shadow-sm">
+      <Card>
         <CardHeader>
           <CardTitle>Referral Information</CardTitle>
         </CardHeader>
@@ -146,7 +146,7 @@ export function ApplicationForm({ action, initialData, submitLabel = 'Create App
       </Card>
 
       {/* Documents & Compensation */}
-      <Card className="rounded-[28px] border border-black/5 bg-white shadow-sm">
+      <Card>
         <CardHeader>
           <CardTitle>Documents & Compensation</CardTitle>
         </CardHeader>
@@ -205,7 +205,7 @@ export function ApplicationForm({ action, initialData, submitLabel = 'Create App
       </Card>
 
       {/* Additional Information */}
-      <Card className="rounded-[28px] border border-black/5 bg-white shadow-sm">
+      <Card>
         <CardHeader>
           <CardTitle>Additional Information</CardTitle>
         </CardHeader>

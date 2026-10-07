@@ -31,7 +31,7 @@ async function QuestionsList({
 
   if (questions.length === 0 && page === 1) {
     return (
-      <Card className="rounded-[32px] border border-black/5 bg-white shadow-sm">
+      <Card>
         <CardContent className="flex flex-col items-center justify-center py-16 text-center">
           <div className="w-14 h-14 rounded-full bg-[#ffcf36]/20 flex items-center justify-center mb-4">
             <BookOpen className="h-7 w-7 text-[#1c2024]" />
@@ -58,7 +58,7 @@ async function QuestionsList({
           <Link
             key={question.id}
             href={`/questions/${question.id}`}
-            className="group block rounded-2xl bg-white hover:bg-[#fcfbf7] border border-black/[0.06] hover:border-black/15 px-4 py-2.5 sm:py-3 transition-all shadow-2xs hover:shadow-xs"
+            className="group block rounded-2xl bg-white/60 backdrop-blur-2xl hover:bg-white/85 border border-white/85 hover:border-white px-4 py-2.5 sm:py-3 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.02)] hover:shadow-xs"
           >
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">

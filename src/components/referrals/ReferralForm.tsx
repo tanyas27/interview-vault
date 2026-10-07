@@ -32,7 +32,7 @@ function toDateInputValue(val: Date | string | null | undefined): string {
 export function ReferralForm({ action, initialData, submitLabel = 'Add Referral' }: ReferralFormProps) {
   return (
     <form action={action} className="space-y-5">
-      <Card className="rounded-[28px] border border-black/5 bg-white shadow-sm">
+      <Card>
         <CardHeader>
           <CardTitle>Referral Details</CardTitle>
         </CardHeader>

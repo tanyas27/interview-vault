@@ -53,7 +53,7 @@ export function TopicsWidget() {
   const done = topics.filter((t) => t.done);
 
   return (
-    <div className="h-full min-h-[360px] flex flex-col rounded-[32px] border border-black/5 bg-white p-6 shadow-sm gap-4">
+    <div className="h-full min-h-[360px] flex flex-col rounded-[32px] border border-white/85 bg-white/60 backdrop-blur-2xl p-6 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] gap-4">
       {/* Header */}
       <div className="flex items-center justify-between shrink-0">
         <div>
@@ -65,7 +65,7 @@ export function TopicsWidget() {
         <button
           type="button"
           onClick={() => setIsAdding(!isAdding)}
-          className="w-8 h-8 rounded-full border border-black/10 bg-[#fcfbf7] hover:bg-[#ffcf36] text-[#1c2024] flex items-center justify-center transition-colors"
+          className="w-8 h-8 rounded-full border border-white/80 bg-white/70 hover:bg-white text-[#1c2024] shadow-2xs flex items-center justify-center transition-colors"
           aria-label="Add topic"
         >
           <Plus className="w-4 h-4" />
@@ -81,7 +81,7 @@ export function TopicsWidget() {
             onChange={(e) => setNewTitle(e.target.value)}
             placeholder="e.g. System design basics..."
             autoFocus
-            className="flex-1 rounded-xl border border-black/10 bg-[#fcfbf7] px-3 py-1.5 text-xs text-[#1c2024] placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#ffcf36]/60"
+            className="flex-1 rounded-xl border border-white/80 bg-white/80 px-3 py-1.5 text-xs text-[#1c2024] placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#ffcf36]/60 shadow-2xs"
           />
           <button
             type="submit"
@@ -140,7 +140,7 @@ function TopicRow({
   onDelete: (id: string, e: React.MouseEvent) => void;
 }) {
   return (
-    <div className="group flex items-center gap-2.5 px-2.5 py-2 rounded-2xl hover:bg-[#fcfbf7] transition-colors">
+    <div className="group flex items-center gap-2.5 px-2.5 py-2 rounded-2xl hover:bg-white/60 transition-colors">
       <button
         type="button"
         onClick={() => onToggle(topic.id)}

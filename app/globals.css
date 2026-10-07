@@ -21,6 +21,11 @@
   --border-warm: #ede9df;
   --border-light: rgba(0, 0, 0, 0.05);
 
+  /* Green Tag Reference Palette */
+  --tag-green-bg: #EBF7D5;
+  --tag-green-text: #749c36;
+  --tag-green-dot: #749c36;
+
   --background: var(--canvas-bg);
   --foreground: var(--text-primary);
 }
@@ -113,4 +118,29 @@ body {
 .glow-warm {
   box-shadow: 0 0 60px 10px rgba(255, 207, 54, 0.25);
 }
+
+/* Authentic frosted glassmorphism matching the reference card design */
+.glass-card {
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.glass-card-interactive {
+  background: rgba(255, 255, 255, 0.60);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-interactive:hover {
+  background: rgba(255, 255, 255, 0.80);
+  border-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
 

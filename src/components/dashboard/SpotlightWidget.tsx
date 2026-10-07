@@ -104,7 +104,7 @@ export function SpotlightWidget({
       </div>
 
       {/* Compensation Details Card */}
-      <div className="rounded-[28px] bg-white border border-black/5 shadow-xs p-4 space-y-3">
+      <div className="rounded-[28px] bg-white/60 backdrop-blur-2xl border border-white/85 shadow-[0_10px_30px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.02)] p-4 space-y-3">
         {/* Header toggle */}
         <div className="flex items-center justify-between pb-2 border-b border-black/5">
           <button
@@ -177,10 +177,11 @@ export function SpotlightWidget({
             {hikePercentage !== null && (
               <div className="mt-2 pt-2 border-t border-dashed border-black/10 flex items-center justify-between text-[11px]">
                 <span className="text-[#717682] flex items-center gap-1">
-                  <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
+                  <TrendingUp className="w-3.5 h-3.5 text-[#749c36]" />
                   <span>Target Hike:</span>
                 </span>
-                <span className="font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
+                <span className="font-bold text-[#749c36] bg-[#EBF7D5] px-2 py-0.5 rounded-full inline-flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#749c36]" />
                   +{hikePercentage}%
                 </span>
               </div>
