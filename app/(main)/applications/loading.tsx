@@ -1,3 +1,5 @@
+// Minimal fallback for direct page loads — client navigations show the NavigationProgress bar instead.
+// The actual inline Suspense boundaries inside the page handle progressive content streaming.
 export default function ApplicationsLoading() {
   return (
     <div className="space-y-6">
@@ -23,3 +25,4 @@ export default function ApplicationsLoading() {
     </div>
   );
 }
+

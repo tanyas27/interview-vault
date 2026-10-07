@@ -223,14 +223,14 @@ export function RoundQuestionsManager({
           </Button>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-2.5">
           {roundQuestions.map((rq, idx) => (
             <Card
               key={rq.id}
-              className="rounded-[28px] border border-black/5 bg-white p-5 shadow-xs hover:shadow-md transition-shadow"
+              className="rounded-2xl border border-black/5 bg-white p-4 shadow-xs hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="space-y-2 flex-1">
+                <div className="space-y-1 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="w-5 h-5 rounded-full bg-[#1c2024] text-white text-[10px] font-bold flex items-center justify-center shrink-0">
                       Q{idx + 1}
@@ -238,19 +238,19 @@ export function RoundQuestionsManager({
                     <Badge variant="outline" className="text-[10px]">
                       {rq.question.category.replace(/_/g, ' ')}
                     </Badge>
-                    <Badge variant="secondary" className="text-[10px]">
+                    <Badge variant="yellow" className="text-[10px] font-bold">
                       {companyName} · {roundType.replace(/_/g, ' ')}
                     </Badge>
                   </div>
 
-                  <h3 className="text-base font-bold text-[#1c2024]">
+                  <h3 className="text-sm font-bold text-[#1c2024]">
                     {rq.question.questionText}
                   </h3>
 
                   {/* Your Answer */}
-                  <div className="mt-3 p-3.5 rounded-2xl bg-[#fcfbf7] border border-black/[0.04] space-y-1.5">
+                  <div className="mt-2.5 p-3 rounded-xl bg-[#fcfbf7] border border-black/[0.04] space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-[#1c2024] uppercase tracking-wider">
+                      <span className="text-[10px] font-bold text-[#1c2024] uppercase tracking-wider">
                         Your Answer / Approach:
                       </span>
                       <Link

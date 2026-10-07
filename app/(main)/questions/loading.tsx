@@ -8,10 +8,11 @@ export default function QuestionsLoading() {
         </div>
         <div className="h-9 w-36 rounded-full skeleton" />
       </div>
-      <div className="h-10 rounded-2xl skeleton" />
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="h-16 rounded-2xl skeleton" />
-      ))}
+      <div className="space-y-2">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div key={i} className="h-14 rounded-2xl skeleton" />
+        ))}
+      </div>
     </div>
   );
 }

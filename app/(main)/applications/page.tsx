@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { getApplications } from '@/actions/applications';
 import { Button } from '@/components/ui/button';
@@ -6,118 +7,110 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, Briefcase, ChevronRight, ChevronLeft } from 'lucide-react';
 import { ApplicationStatus } from '@prisma/client';
 
-export default async function ApplicationsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ page?: string }>;
-}) {
-  const params = await searchParams;
-  const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1);
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+
+function ApplicationsListSkeleton() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="rounded-[28px] border border-black/5 bg-white p-5 space-y-3">
+          <div className="flex items-start justify-between gap-2">
+            <div className="h-5 w-32 rounded skeleton" />
+            <div className="h-5 w-20 rounded-full skeleton" />
+          </div>
+          <div className="h-4 w-40 rounded skeleton" />
+          <div className="h-16 rounded-2xl skeleton" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Async data component ─────────────────────────────────────────────────────
+
+async function ApplicationsList({ page }: { page: number }) {
   const { applications, total, pageSize } = await getApplications(page);
 
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold text-[#1c2024] tracking-tight">Applications</h1>
-          <p className="mt-1 text-sm text-[#717682]">
-            Track your active job applications, interview stages, and offers
+  if (applications.length === 0 && page === 1) {
+    return (
+      <Card className="rounded-[32px] border border-black/5 bg-white shadow-sm">
+        <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+          <div className="w-14 h-14 rounded-full bg-[#ffcf36]/20 flex items-center justify-center mb-4">
+            <Briefcase className="h-7 w-7 text-[#1c2024]" />
+          </div>
+          <h3 className="text-xl font-bold text-[#1c2024] mb-2">No applications yet</h3>
+          <p className="text-sm text-[#717682] max-w-md mb-6">
+            Get started by logging your first job application. Track rounds, extract interview questions, and follow up.
           </p>
-        </div>
-        <Button variant="yellow" asChild>
-          <Link href="/applications/new">
-            <Plus className="h-4 w-4 mr-1.5" />
-            New Application
-          </Link>
-        </Button>
-      </div>
+          <Button variant="yellow" asChild>
+            <Link href="/applications/new">
+              <Plus className="h-4 w-4 mr-1.5" />
+              Create Application
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
-      {applications.length === 0 && page === 1 ? (
-        <Card className="rounded-[32px] border border-black/5 bg-white shadow-sm">
-          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="w-14 h-14 rounded-full bg-[#ffcf36]/20 flex items-center justify-center mb-4">
-              <Briefcase className="h-7 w-7 text-[#1c2024]" />
-            </div>
-            <h3 className="text-xl font-bold text-[#1c2024] mb-2">
-              No applications yet
-            </h3>
-            <p className="text-sm text-[#717682] max-w-md mb-6">
-              Get started by logging your first job application. Track rounds, extract interview questions, and follow up.
-            </p>
-            <Button variant="yellow" asChild>
-              <Link href="/applications/new">
-                <Plus className="h-4 w-4 mr-1.5" />
-                Create Application
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {applications.map((application) => (
-            <Link key={application.id} href={`/applications/${application.id}`} className="group block">
-              <Card className="h-full rounded-[28px] border border-black/5 bg-white p-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="text-lg font-bold text-[#1c2024] group-hover:text-black">
-                      {application.companyName}
-                    </CardTitle>
-                    <Badge variant={getStatusVariant(application.status)}>
-                      {application.status}
-                    </Badge>
+  return (
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {applications.map((application) => (
+          <Link key={application.id} href={`/applications/${application.id}`} className="group block">
+            <Card className="h-full rounded-[28px] border border-black/5 bg-white p-2 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between gap-2">
+                  <CardTitle className="text-lg font-bold text-[#1c2024] group-hover:text-black">
+                    {application.companyName}
+                  </CardTitle>
+                  <Badge variant={getStatusVariant(application.status)}>{application.status}</Badge>
+                </div>
+                <p className="text-xs text-[#717682] mt-0.5">{application.jobTitle}</p>
+              </CardHeader>
+              <CardContent className="space-y-3 pt-0">
+                <div className="p-3.5 rounded-2xl bg-[#fcfbf7] border border-black/[0.04] space-y-2 text-xs text-[#4b515d]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#8e939f]">Interview Rounds:</span>
+                    <span className="font-bold text-[#1c2024]">{application._count.rounds}</span>
                   </div>
-                  <p className="text-xs text-[#717682] mt-0.5">
-                    {application.jobTitle}
-                  </p>
-                </CardHeader>
-                <CardContent className="space-y-3 pt-0">
-                  <div className="p-3.5 rounded-2xl bg-[#fcfbf7] border border-black/[0.04] space-y-2 text-xs text-[#4b515d]">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#8e939f]">Interview Rounds:</span>
-                      <span className="font-bold text-[#1c2024]">{application._count.rounds}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-[#8e939f]">Applied On:</span>
-                      <span className="font-medium text-[#1c2024]">
-                        {new Date(application.appliedDate).toLocaleDateString('en-IN', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#8e939f]">Applied On:</span>
+                    <span className="font-medium text-[#1c2024]">
+                      {new Date(application.appliedDate).toLocaleDateString('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </span>
+                  </div>
+                  {application.offeredSalary && (
+                    <div className="flex items-center justify-between pt-1 border-t border-black/[0.04]">
+                      <span className="text-[#8e939f]">Offered Salary:</span>
+                      <span className="font-bold text-emerald-700">
+                        ₹{application.offeredSalary.toLocaleString('en-IN')}
                       </span>
                     </div>
+                  )}
+                </div>
 
-                    {/* Salary in INR */}
-                    {application.offeredSalary && (
-                      <div className="flex items-center justify-between pt-1 border-t border-black/[0.04]">
-                        <span className="text-[#8e939f]">Offered Salary:</span>
-                        <span className="font-bold text-emerald-700">
-                          ₹{application.offeredSalary.toLocaleString('en-IN')}
-                        </span>
-                      </div>
-                    )}
+                <div className="flex items-center justify-between pt-1">
+                  {application.hasReferral ? (
+                    <Badge variant="outline" className="text-[10px]">
+                      Referred by {application.referrerName || 'Contact'}
+                    </Badge>
+                  ) : (
+                    <span className="text-[11px] text-[#8e939f]">Direct Application</span>
+                  )}
+                  <div className="w-7 h-7 rounded-full bg-zinc-100 flex items-center justify-center group-hover:bg-[#ffcf36] transition-colors">
+                    <ChevronRight className="h-4 w-4 text-[#1c2024]" />
                   </div>
-
-                  <div className="flex items-center justify-between pt-1">
-                    {application.hasReferral ? (
-                      <Badge variant="outline" className="text-[10px]">
-                        Referred by {application.referrerName || 'Contact'}
-                      </Badge>
-                    ) : (
-                      <span className="text-[11px] text-[#8e939f]">Direct Application</span>
-                    )}
-
-                    <div className="w-7 h-7 rounded-full bg-zinc-100 flex items-center justify-center group-hover:bg-[#ffcf36] transition-colors">
-                      <ChevronRight className="h-4 w-4 text-[#1c2024]" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      )}
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
 
       {total > pageSize && (
         <div className="flex items-center justify-between pt-2">
@@ -144,6 +137,42 @@ export default async function ApplicationsPage({
           </div>
         </div>
       )}
+    </>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+export default async function ApplicationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1);
+
+  return (
+    <div className="space-y-6">
+      {/* Header — renders instantly, no DB needed */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-extrabold text-[#1c2024] tracking-tight">Applications</h1>
+          <p className="mt-1 text-sm text-[#717682]">
+            Track your active job applications, interview stages, and offers
+          </p>
+        </div>
+        <Button variant="yellow" asChild>
+          <Link href="/applications/new">
+            <Plus className="h-4 w-4 mr-1.5" />
+            New Application
+          </Link>
+        </Button>
+      </div>
+
+      {/* Applications list streams in */}
+      <Suspense fallback={<ApplicationsListSkeleton />}>
+        <ApplicationsList page={page} />
+      </Suspense>
     </div>
   );
 }

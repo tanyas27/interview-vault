@@ -47,6 +47,7 @@ export function Header({ userName, userEmail }: HeaderProps) {
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch={true}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'px-5 py-2 text-sm font-medium rounded-full transition-all duration-200',
