@@ -71,34 +71,87 @@ export function SpotlightWidget({
 
   return (
     <div className="space-y-4">
-      {/* Candidate Profile Card */}
-      <div className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-[#2f3540] via-[#1c2024] to-[#121519] min-h-[220px] p-6 flex flex-col justify-end text-white shadow-md">
-        {/* Subtle decorative glow */}
-        <div className="absolute top-0 right-0 w-36 h-36 bg-[#ffcf36]/15 rounded-full blur-2xl pointer-events-none" />
+      {/* Candidate Profile Credit Card */}
+      <div className="relative rounded-[26px] overflow-hidden bg-gradient-to-br from-[#242930] via-[#15191d] to-[#0c0e11] p-5 sm:p-6 flex flex-col justify-between text-white border border-white/15 min-h-[215px] group transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+        {/* Specular lighting & Holographic glare overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.12)_0%,rgba(255,255,255,0.02)_40%,transparent_65%)] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-44 h-44 bg-[#ffcf36]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-[#ffcf36]/15 rounded-full blur-2xl pointer-events-none" />
 
-        {/* User initials badge */}
-        <div className="absolute top-5 right-5 w-12 h-12 rounded-full border-2 border-white/20 bg-white/10 flex items-center justify-center font-bold text-sm text-[#ffcf36]">
-          {userInitials}
+        {/* Card Header: EMV Chip + Contactless wave + Initials Crest */}
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* EMV Gold Chip */}
+            <div className="w-10 h-7 rounded-[6px] bg-gradient-to-br from-[#fae69e] via-[#dfb743] to-[#997314] p-[2px] shadow-[inset_0_1px_1px_rgba(255,255,255,0.7),0_2px_4px_rgba(0,0,0,0.4)] border border-[#caa33a] flex items-center justify-center relative overflow-hidden">
+              <div className="w-full h-full rounded-[4px] border border-[#805e07]/40 relative flex items-center justify-center">
+                <div className="absolute inset-x-0 h-[1px] bg-[#805e07]/50" />
+                <div className="absolute inset-y-0 w-[1px] bg-[#805e07]/50" />
+                <div className="w-3.5 h-3 rounded-[2px] border border-[#805e07]/40 bg-[#dfb743]/25" />
+              </div>
+            </div>
+
+            {/* Contactless Wave */}
+            <svg
+              className="w-4 h-4 text-white/50 rotate-90"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <path d="M8.5 16.5a5 5 0 0 1 0-9" />
+              <path d="M12 19a8.5 8.5 0 0 1 0-14" />
+              <path d="M15.5 21.5a12 12 0 0 1 0-19" />
+            </svg>
+          </div>
+
+          {/* User initials badge styled as a metallic seal */}
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-semibold tracking-[0.2em] text-white/40 uppercase hidden sm:inline-block">
+              VAULT ELITE
+            </span>
+            <div className="w-10 h-10 rounded-full border border-[#ffcf36]/40 bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-md flex items-center justify-center font-bold text-xs tracking-wider text-[#ffcf36] shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),0_2px_6px_rgba(0,0,0,0.35)]">
+              {userInitials}
+            </div>
+          </div>
         </div>
 
+        {/* Card Middle: Embossed masked card number */}
+        <div className="relative z-10 my-3">
+          <p className="font-mono text-sm tracking-[0.28em] text-white/75 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] select-none">
+            •••• •••• •••• 2026
+          </p>
+        </div>
+
+        {/* Card Footer: Cardholder info + Brand Hologram Circles */}
         <div className="relative z-10 flex items-end justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <h3 className="text-xl font-bold text-white tracking-tight truncate">
+            <span className="block text-[8px] uppercase tracking-widest text-white/45 font-semibold">
+              CARDHOLDER
+            </span>
+            <h3 className="text-base sm:text-lg font-bold text-white tracking-wide truncate drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]">
               {candidateName}
             </h3>
 
             {profileHeadline ? (
-              <p className="text-xs text-zinc-300 mt-0.5 truncate font-medium">
+              <p className="text-[11px] text-zinc-300 mt-0.5 truncate font-medium">
                 {profileHeadline}
               </p>
             ) : (
               <Link
                 href="/settings#profile"
-                className="text-xs text-[#ffcf36] hover:underline mt-0.5 inline-block"
+                className="text-[11px] text-[#ffcf36] hover:underline mt-0.5 inline-block"
               >
                 + Set current role & company
               </Link>
             )}
+          </div>
+
+          {/* Interlocking card circles network emblem */}
+          <div className="flex -space-x-2 shrink-0 opacity-80 pb-0.5" aria-hidden="true">
+            <div className="w-6 h-6 rounded-full bg-[#ffcf36]/80 backdrop-blur-xs shadow-xs" />
+            <div className="w-6 h-6 rounded-full bg-[#ff6b4a]/75 backdrop-blur-xs shadow-xs" />
           </div>
         </div>
       </div>

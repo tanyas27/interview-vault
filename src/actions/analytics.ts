@@ -166,6 +166,7 @@ export async function getDashboardStats() {
     totalQuestions,
     offersReceived,
     pendingReferrals,
+    totalReferrals,
   ] = await Promise.all([
     db.application.count({ where: { userId: user.userId } }),
     db.application.count({
@@ -195,6 +196,7 @@ export async function getDashboardStats() {
     db.referral.count({
       where: { userId: user.userId, status: { in: ['PENDING', 'HR_CONTACTED'] } },
     }),
+    db.referral.count({ where: { userId: user.userId } }),
   ]);
 
   const offerRate =
@@ -209,5 +211,6 @@ export async function getDashboardStats() {
     offersReceived,
     offerRate,
     pendingReferrals,
+    totalReferrals,
   };
 }

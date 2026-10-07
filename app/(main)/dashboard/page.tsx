@@ -21,9 +21,8 @@ function HeaderDataSkeleton() {
     <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          {[120, 175, 125, 110].map((w, i) => (
-            <div key={i} className="h-7 rounded-full skeleton" style={{ width: w }} />
-          ))}
+          <div className="h-7 w-[125px] rounded-full skeleton" />
+          <div className="h-7 w-[115px] rounded-full skeleton" />
         </div>
       </div>
       <div className="flex items-center gap-6 sm:gap-10 shrink-0">
@@ -69,31 +68,16 @@ async function DashboardHeaderData() {
     <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
       {/* Left: stat pills */}
       <div className="flex flex-wrap items-center gap-2">
-        <div className="px-4 py-1.5 rounded-full bg-[#1c2024] text-white text-xs font-semibold shadow-xs">
-          {stats.upcomingRounds > 0
-            ? `${stats.upcomingRounds} Upcoming Round${stats.upcomingRounds !== 1 ? 's' : ''}`
-            : `${stats.totalRounds} Round${stats.totalRounds !== 1 ? 's' : ''}`}
-        </div>
-        <div className="px-4 py-1.5 rounded-full bg-[#ffcf36] text-[#1c2024] text-xs font-bold shadow-xs">
-          {stats.offersReceived > 0
-            ? `${stats.offersReceived} Offers Received`
-            : `${stats.totalApplications} Applications Tracked`}
-        </div>
         <div className="px-4 py-1.5 rounded-full border border-black/10 text-[#4b515d] text-xs font-semibold bg-white/40">
           {stats.activeApplications} Active Pipeline
         </div>
-        <div className="px-4 py-1.5 rounded-full border border-black/15 text-[#717682] text-xs font-medium bg-white/60">
-          {stats.totalQuestions} Questions Bank
+        <div className="px-4 py-1.5 rounded-full bg-[#EAE3F5] text-[#5832a8] border border-[#d8cceb] text-xs font-semibold">
+          {stats.totalReferrals} Total Referral{stats.totalReferrals !== 1 ? 's' : ''}
         </div>
-        {stats.pendingReferrals > 0 && (
-          <div className="px-4 py-1.5 rounded-full border border-blue-200 text-blue-700 text-xs font-semibold bg-blue-50">
-            {stats.pendingReferrals} Referral{stats.pendingReferrals !== 1 ? 's' : ''} Pending
-          </div>
-        )}
       </div>
 
       {/* Right: big metric counters */}
-      <div className="flex flex-wrap items-center gap-6 sm:gap-10">
+      <div className="flex flex-wrap items-center gap-6 sm:gap-10 shrink-0">
         {[
           { icon: <Users className="w-4 h-4 text-[#1c2024]" />, value: stats.totalApplications, label: 'Pipeline' },
           { icon: <Calendar className="w-4 h-4 text-[#1c2024]" />, value: stats.totalRounds, label: 'Rounds' },
@@ -251,13 +235,12 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8 pb-10">
-      {/* 1. Welcome heading — renders instantly */}
-      <div>
+      {/* 1. Welcome heading */}
+      <div className="space-y-3">
         <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#1c2024]">
           Welcome in, {userName}
         </h1>
 
-        {/* Stat pills + metrics stream in right below the heading */}
         <Suspense fallback={<HeaderDataSkeleton />}>
           <DashboardHeaderData />
         </Suspense>

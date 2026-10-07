@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Settings, Menu, X } from 'lucide-react';
+import { Settings, Menu, X, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/lib/navigation';
 
@@ -95,11 +95,11 @@ export function Header({ userName, userEmail }: HeaderProps) {
           <button
             type="button"
             onClick={() => setShowLogoutDialog(true)}
-            className="w-10 h-10 rounded-full bg-[#ffcf36] hover:bg-[#f5c225] active:scale-95 text-[#1c2024] font-bold text-sm flex items-center justify-center border border-black/10 shadow-xs transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#ffcf36] focus:ring-offset-2"
+            className="w-10 h-10 rounded-full bg-white/70 hover:bg-white active:scale-95 text-[#5d636f] hover:text-[#1c2024] flex items-center justify-center border border-black/10 shadow-xs transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-black/10 focus:ring-offset-2"
             title={`${userName} (${userEmail}) • Click to log out`}
             aria-label={`User profile for ${userName}. Click to log out`}
           >
-            {initials}
+            <User className="w-4 h-4" />
           </button>
 
           <button
